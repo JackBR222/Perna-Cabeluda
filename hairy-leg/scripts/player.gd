@@ -67,3 +67,19 @@ func _physics_process(delta: float) -> void:
 	play_footstep_sound(delta)
 
 	move_and_slide()
+
+#Vida e Morte
+@onready var health_bar = get_tree().get_root().find_child("HealthBar", true, false)
+
+var hp := 3
+
+func take_damage(amount: int):
+	hp -= amount
+	print("Player HP:", hp)
+
+	if hp <= 0:
+		die()
+
+func die():
+	print("Player morreu!")
+	queue_free()

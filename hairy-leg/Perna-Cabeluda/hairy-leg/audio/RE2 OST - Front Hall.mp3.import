@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://60gruf8hvf0y"
+path="res://.godot/imported/RE2 OST - Front Hall.mp3-6a41fc4a0b2ed1a0c4b29ee8682ffb89.mp3str"
+
+[deps]
+
+source_file="res://audio/RE2 OST - Front Hall.mp3"
+dest_files=["res://.godot/imported/RE2 OST - Front Hall.mp3-6a41fc4a0b2ed1a0c4b29ee8682ffb89.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

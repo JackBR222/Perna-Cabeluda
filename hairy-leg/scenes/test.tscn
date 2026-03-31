@@ -85,7 +85,7 @@ target_position = Vector3(0, -1.5, 0)
 [node name="SpotLight3D" type="SpotLight3D" parent="Player" unique_id=942628059]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72256804, -0.58021474)
 light_color = Color(1, 0.94509804, 0.8392157, 1)
-light_energy = 250.0
+light_energy = 25.0
 light_indirect_energy = 10.0
 light_volumetric_fog_energy = 3.0
 spot_range = 6.0
