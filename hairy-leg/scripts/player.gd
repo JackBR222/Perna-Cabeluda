@@ -1,42 +1,38 @@
-class_name Player
 extends CharacterBody3D
+class_name Player
 
-# Configurações de movimento
-@export_group("Movement Settings")
-@export var turn_speed: float = 160.0
-@export var walk_speed: float = 110.0
-@export var run_speed: float = 250.0
+var is_hidden: bool = false
 
-# Constantes
+# CONFIGURAÇÕES MOVIMENTO
+@export var turn_speed: float = 120.0
+@export var walk_speed: float = 2.0
+@export var run_speed: float = 4.5
 const GRAVITY: float = -9.81
 
-# Virar / Rotacionar
+# MOVIMENTO
 func handle_turn(delta: float) -> void:
-	var turn_dir = Input.get_axis("turn_left", "turn_right")
-	rotation_degrees.y -= turn_dir * turn_speed * delta
+	var turn_input = Input.get_axis("turn_left", "turn_right")
+	rotation_degrees.y -= turn_input * turn_speed * delta
 
-# Andando
-func handle_walk(delta: float) -> void:
+func handle_walk(_delta: float) -> void:
 	var forward_input = Input.get_axis("move_backward", "move_forward")
-	var walk_velocity = -basis.z * forward_input * walk_speed * delta
-	velocity.x = walk_velocity.x
-	velocity.z = walk_velocity.z
+	var walk_vel = -basis.z * forward_input * walk_speed
+	velocity.x = walk_vel.x
+	velocity.z = walk_vel.z
 
-# Correndo
-func handle_run(delta: float) -> void:
+func handle_run(_delta: float) -> void:
 	var forward_input = Input.get_axis("move_backward", "move_forward")
-	var run_velocity = -basis.z * forward_input * run_speed * delta
-	velocity.x = run_velocity.x
-	velocity.z = run_velocity.z
+	var run_vel = -basis.z * forward_input * run_speed
+	velocity.x = run_vel.x
+	velocity.z = run_vel.z
 
-# Gravidade
 func handle_gravity(delta: float) -> void:
 	if is_on_floor():
 		velocity.y = -2.0
 	else:
 		velocity.y += GRAVITY * delta
 
-# Som de passo dinâmico
+# SONS DE PASSO
 var step_timer: float = 0.0
 @export var walk_step_interval: float = 0.6
 @export var run_step_interval: float = 0.35
@@ -44,42 +40,53 @@ var step_timer: float = 0.0
 func play_footstep_sound(delta: float) -> void:
 	var moving_forward = Input.is_action_pressed("move_forward") or Input.is_action_pressed("move_backward")
 	if is_on_floor() and moving_forward:
-		# Ajusta intervalo dependendo se está correndo
-		var step_interval = run_step_interval if Input.is_action_pressed("run") else walk_step_interval
+		var interval = run_step_interval if Input.is_action_pressed("run") else walk_step_interval
 		step_timer -= delta
 		if step_timer <= 0.0:
-			var footstep_player = $FootstepPlayer
-			footstep_player.play()
-			step_timer = step_interval
+			$FootstepPlayer.play()
+			step_timer = interval
 	else:
-		step_timer = 0.0  # reset quando para de andar
+		step_timer = 0.0
 
-# Física
+# FÍSICAS
 func _physics_process(delta: float) -> void:
 	handle_turn(delta)
-
 	if Input.is_action_pressed("run"):
 		handle_run(delta)
 	else:
 		handle_walk(delta)
-
 	handle_gravity(delta)
 	play_footstep_sound(delta)
-
 	move_and_slide()
 
-#Vida e Morte
-@onready var health_bar = get_tree().get_root().find_child("HealthBar", true, false)
-
+# VIDA E MORTE
 var hp := 3
-
-func take_damage(amount: int):
+func take_damage(amount: int) -> void:
 	hp -= amount
 	print("Player HP:", hp)
-
 	if hp <= 0:
 		die()
 
-func die():
+func die() -> void:
 	print("Player morreu!")
 	queue_free()
+
+# ITENS / INTERAÇÃO
+@onready var interaction_ray: RayCast3D = $Interact3D
+@onready var hold_position: Node3D = $HoldPosition
+var held_item: Item = null
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("interact"):
+		_handle_interaction()
+
+# Função unificada de interação
+func _handle_interaction() -> void:
+	if not interaction_ray.is_colliding():
+		return
+	
+	var collider = interaction_ray.get_collider()
+
+	# Se o objeto colidido tiver a função 'interact', chama passando o Player
+	if collider.has_method("interact"):
+		collider.interact(self)

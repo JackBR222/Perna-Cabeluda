@@ -1,0 +1,185 @@
+[gd_scene format=3 uid="uid://pxpvsgcff23m"]
+
+[ext_resource type="Script" uid="uid://b1mvd3uenyu1j" path="res://scripts/player.gd" id="1_vr8k8"]
+[ext_resource type="Shader" uid="uid://c2jh875a4nmd6" path="res://scripts/shaders/PS1 Model.gdshader" id="2_22kcg"]
+[ext_resource type="Texture2D" uid="uid://x30gn6taokf0" path="res://models/leon.png" id="3_njvmk"]
+[ext_resource type="ArrayMesh" uid="uid://cf0cgec0tg044" path="res://models/leon.obj" id="4_qfwyk"]
+[ext_resource type="Script" uid="uid://d124pmhe32yqs" path="res://scripts/FootstepSoundManager.gd" id="5_a7hxv"]
+[ext_resource type="Script" uid="uid://cu3e7trq05nj4" path="res://scripts/flashlight.gd" id="6_p8mh7"]
+[ext_resource type="Texture2D" uid="uid://dhjnxqo7isn6h" path="res://models/sprites/HaloWhite.png" id="7_b6a15"]
+[ext_resource type="AudioStream" uid="uid://60gruf8hvf0y" path="res://audio/RE2 OST - Front Hall.mp3" id="8_2lgdx"]
+[ext_resource type="Script" uid="uid://uqmuwnp5deeq" path="res://Item.gd" id="9_dwvmw"]
+[ext_resource type="Script" uid="uid://cxmn0pa1crnmp" path="res://Door.gd" id="10_80uqq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_elmk5"]
+render_priority = 0
+shader = ExtResource("2_22kcg")
+shader_parameter/affine_mapping = true
+shader_parameter/albedo = ExtResource("3_njvmk")
+shader_parameter/alpha_scissor = 0.5
+shader_parameter/jitter = 0.50000002375
+shader_parameter/resolution = Vector2i(320, 240)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_m1aan"]
+height = 2.855423
+radius = 0.48242188
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4v5vt"]
+transparency = 1
+shading_mode = 0
+disable_fog = true
+albedo_texture = ExtResource("7_b6a15")
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_cc3f6"]
+vertices = PackedVector3Array(-24.5, 1, -13.249999, -24.5, 1, 13.250001, 24.5, 1, 13.250001, 24.5, 1, -13.249999)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ehkex"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cnhax"]
+material = SubResource("StandardMaterial3D_ehkex")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cc3f6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y2yx8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dwvmw"]
+albedo_color = Color(0.32780465, 0.34044865, 0.8223146, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_80uqq"]
+material = SubResource("StandardMaterial3D_dwvmw")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_etjxt"]
+albedo_color = Color(0.7736467, 0, 0.2759378, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dwvmw"]
+material = SubResource("StandardMaterial3D_etjxt")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_etjxt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_80uqq"]
+
+[node name="Node3D" type="Node3D" unique_id=1641939658]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1635118531]
+
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=768595748]
+anchors_preset = -1
+anchor_right = 0.0640625
+offset_right = 4.0
+offset_bottom = 27.0
+max_value = 3.0
+value = 3.0
+metadata/_edit_use_anchors_ = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=861037075]
+transform = Transform3D(0.7071068, 0.35355338, -0.61237246, 0, 0.8660254, 0.50000006, 0.7071068, -0.35355338, 0.61237246, -8, 8.055338, 8)
+shadow_enabled = true
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=1666494784]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12, 2, 8)
+script = ExtResource("1_vr8k8")
+
+[node name="Leon" type="MeshInstance3D" parent="Player" unique_id=904005644]
+transform = Transform3D(-0.05, 0, -4.371139e-09, 0, 0.05, 0, 4.371139e-09, 0, -0.05, 0, -1, 0)
+layers = 2
+material_override = SubResource("ShaderMaterial_elmk5")
+mesh = ExtResource("4_qfwyk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=2131547702]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.43025732, 0)
+shape = SubResource("CylinderShape3D_m1aan")
+
+[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="Player" unique_id=1063778005 node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.99597347, 0)
+script = ExtResource("5_a7hxv")
+player = NodePath("..")
+
+[node name="RayCast3D" type="RayCast3D" parent="Player/FootstepPlayer" unique_id=177472504]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99597347, 0)
+target_position = Vector3(0, -1.5, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Player" unique_id=1396702578]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72256804, -0.58021474)
+light_color = Color(1, 0.94509804, 0.8392157, 1)
+light_energy = 25.0
+light_indirect_energy = 10.0
+light_volumetric_fog_energy = 3.0
+spot_range = 6.0
+spot_angle = 40.52274
+script = ExtResource("6_p8mh7")
+
+[node name="FootGlow" type="Sprite3D" parent="Player" unique_id=1716137158]
+transform = Transform3D(0.14999996, 0, 0, 0, -6.556707e-09, 1, 0, -0.14999996, -4.3711385e-08, 0, -0.9, 0)
+material_override = SubResource("StandardMaterial3D_4v5vt")
+texture = ExtResource("7_b6a15")
+
+[node name="Camera3D" type="Camera3D" parent="Player" unique_id=2045144945]
+transform = Transform3D(1, 2.1855694e-08, 5.856215e-09, -2.1855694e-08, 0.86602545, 0.5, 5.856215e-09, -0.5, 0.86602545, 0, 3, 2)
+current = true
+
+[node name="HoldPosition" type="Node3D" parent="Player" unique_id=604609556]
+
+[node name="Interact3D" type="RayCast3D" parent="Player" unique_id=1586178030]
+target_position = Vector3(0, 0, -4)
+collision_mask = 2
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=124517392]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.231995, 0, 8)
+navigation_mesh = SubResource("NavigationMesh_cc3f6")
+
+[node name="Ground" type="MeshInstance3D" parent="NavigationRegion3D" unique_id=498077530]
+transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 27.499998, 0, 0, 0)
+mesh = SubResource("BoxMesh_cnhax")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/Ground" unique_id=389632849]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Ground/StaticBody3D" unique_id=1776754320]
+shape = SubResource("BoxShape3D_cc3f6")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=421202440]
+stream = ExtResource("8_2lgdx")
+volume_db = -20.0
+autoplay = true
+
+[node name="Item" type="RigidBody3D" parent="." unique_id=45962762]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.6930428, 8)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("9_dwvmw")
+item_type = "blue"
+hold_offset = Vector3(0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Item" unique_id=441509877]
+shape = SubResource("BoxShape3D_y2yx8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Item" unique_id=237124766]
+mesh = SubResource("BoxMesh_80uqq")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Item" unique_id=459966739]
+
+[node name="Item2" type="RigidBody3D" parent="." unique_id=600390419]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1.3860855, 16)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("9_dwvmw")
+item_type = "red"
+hold_offset = Vector3(0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Item2" unique_id=1338776718]
+shape = SubResource("BoxShape3D_y2yx8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Item2" unique_id=145345234]
+mesh = SubResource("BoxMesh_dwvmw")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Item2" unique_id=1762363123]
+
+[node name="Node3D" type="StaticBody3D" parent="." unique_id=234814389]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.573737, 1.6640158, 12)
+script = ExtResource("10_80uqq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D" unique_id=812664257]
+mesh = SubResource("CapsuleMesh_etjxt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D" unique_id=655421442]
+shape = SubResource("BoxShape3D_80uqq")
