@@ -1,18 +1,23 @@
 [gd_scene format=4 uid="uid://dmq0frdn36mno"]
 
+[ext_resource type="Script" uid="uid://bdreqgh6sqyrj" path="res://scripts/Player_Camera.gd" id="1_bvc7t"]
 [ext_resource type="Script" uid="uid://b1mvd3uenyu1j" path="res://scripts/player.gd" id="1_vr8k8"]
 [ext_resource type="Shader" uid="uid://c2jh875a4nmd6" path="res://scripts/shaders/PS1 Model.gdshader" id="2_22kcg"]
 [ext_resource type="Texture2D" uid="uid://x30gn6taokf0" path="res://models/leon.png" id="3_njvmk"]
 [ext_resource type="ArrayMesh" uid="uid://cf0cgec0tg044" path="res://models/leon.obj" id="4_qfwyk"]
 [ext_resource type="Script" uid="uid://d124pmhe32yqs" path="res://scripts/FootstepSoundManager.gd" id="5_a7hxv"]
-[ext_resource type="Script" uid="uid://cu3e7trq05nj4" path="res://scripts/flashlight.gd" id="6_p8mh7"]
-[ext_resource type="Texture2D" uid="uid://dhjnxqo7isn6h" path="res://models/sprites/HaloWhite.png" id="7_b6a15"]
 [ext_resource type="AudioStream" uid="uid://60gruf8hvf0y" path="res://audio/RE2 OST - Front Hall.mp3" id="8_2lgdx"]
 [ext_resource type="Texture2D" uid="uid://dlh8kftyao7dv" path="res://models/EM12B.png" id="9_22kcg"]
 [ext_resource type="Script" uid="uid://c3lsvvvnai66p" path="res://scripts/enemy_AI.gd" id="9_njvmk"]
 [ext_resource type="AudioStream" uid="uid://ch28syaqihthv" path="res://audio/RE2 OST - Tyrant.mp3" id="10_owiiy"]
+[ext_resource type="Script" uid="uid://cxvt0h02io3br" path="res://scripts/test_scripts/AreaTrigger.gd" id="12_r667m"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_elmk5"]
+[sub_resource type="Environment" id="Environment_owiiy"]
+background_mode = 1
+fog_enabled = true
+volumetric_fog_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r667m"]
 render_priority = 0
 shader = ExtResource("2_22kcg")
 shader_parameter/affine_mapping = true
@@ -21,15 +26,9 @@ shader_parameter/alpha_scissor = 0.5
 shader_parameter/jitter = 0.50000002375
 shader_parameter/resolution = Vector2i(320, 240)
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_m1aan"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_bvc7t"]
 height = 2.855423
 radius = 0.48242188
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4v5vt"]
-transparency = 1
-shading_mode = 0
-disable_fog = true
-albedo_texture = ExtResource("7_b6a15")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cc3f6"]
 render_priority = 0
@@ -80,8 +79,8 @@ shadow_mesh = SubResource("ArrayMesh_go7fu")
 height = 3.0
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_cc3f6"]
-vertices = PackedVector3Array(-24.5, 1, -5.249999, -19, 1, -5.249999, -19, 1, -7.249999, -17.75, 1, -7.499999, -17.75, 1, -13.249999, -24.5, 1, -13.249999, 17, 1, -7.249999, 18, 1, -7.499999, 18, 1, -13.249999, -16.75, 1, -7.249999, 7, 1, 6.500001, 17, 1, 5.750001, -16.75, 1, 6.250001, -6.5, 1, 6.500001, 19.25, 1, -7.249999, 19.25, 1, -5.749999, 24.5, 1, -5.999999, 24.5, 1, -13.249999, 19.25, 1, 5.250001, 24.5, 1, 5.500001, -24.5, 1, 4.750001, -19, 1, 4.750001, -19, 1, 6.750001, -17.75, 1, 13.250001, -17.75, 1, 7.000001, -24.5, 1, 13.250001, 19.25, 1, 6.750001, 18, 1, 7.000001, 18, 1, 13.250001, 24.5, 1, 13.250001, 7.5, 1, 8.500001, 5.25, 1, 8.750001, 5.25, 1, 13.250001, 17, 1, 6.750001, 7.5, 1, 6.750001, -4.75, 1, 13.250001, -4.75, 1, 8.750001, -7, 1, 8.500001, -17, 1, 7.000001, -7, 1, 6.750001)
-polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 2), PackedInt32Array(4, 2, 5), PackedInt32Array(5, 2, 0), PackedInt32Array(8, 7, 6), PackedInt32Array(9, 3, 4), PackedInt32Array(6, 11, 10), PackedInt32Array(13, 12, 9), PackedInt32Array(6, 10, 8), PackedInt32Array(8, 10, 13), PackedInt32Array(8, 13, 9), PackedInt32Array(8, 9, 4), PackedInt32Array(16, 15, 14), PackedInt32Array(14, 7, 8), PackedInt32Array(8, 17, 14), PackedInt32Array(14, 17, 16), PackedInt32Array(15, 16, 18), PackedInt32Array(18, 16, 19), PackedInt32Array(0, 1, 20), PackedInt32Array(20, 1, 21), PackedInt32Array(20, 21, 22), PackedInt32Array(23, 22, 24), PackedInt32Array(23, 25, 22), PackedInt32Array(22, 25, 20), PackedInt32Array(26, 18, 19), PackedInt32Array(28, 27, 26), PackedInt32Array(28, 26, 29), PackedInt32Array(29, 26, 19), PackedInt32Array(32, 31, 30), PackedInt32Array(27, 28, 33), PackedInt32Array(33, 28, 30), PackedInt32Array(30, 28, 32), PackedInt32Array(33, 34, 11), PackedInt32Array(11, 34, 10), PackedInt32Array(30, 34, 33), PackedInt32Array(37, 36, 35), PackedInt32Array(23, 24, 38), PackedInt32Array(38, 12, 23), PackedInt32Array(23, 12, 37), PackedInt32Array(23, 37, 35), PackedInt32Array(12, 13, 39), PackedInt32Array(12, 39, 37), PackedInt32Array(36, 31, 35), PackedInt32Array(35, 31, 32)]
+vertices = PackedVector3Array(19, 1, -7.5, 19.25, 1, -5.75, 24.5, 1, -6, 24.5, 1, -35.25, -24.5, 1, -5.25, -19, 1, -5.25, -19, 1, -7.25, -24.5, 1, -35.25, 7, 1, 6.5, 17, 1, 5.75, 17, 1, -7.25, -17, 1, -7.5, -16.75, 1, 6.25, -6.5, 1, 6.5, 19.25, 1, 5.25, 24.5, 1, 5.5, -24.5, 1, 4.75, -19, 1, 4.75, -19, 1, 6.75, -17.75, 1, 13.25, -17.75, 1, 7, -24.5, 1, 13.25, 19.25, 1, 6.75, 18, 1, 7, 18, 1, 13.25, 24.5, 1, 13.25, 7.5, 1, 8.5, 5.25, 1, 8.75, 5.25, 1, 13.25, 17, 1, 6.75, 7.5, 1, 6.75, -4.75, 1, 13.25, -4.75, 1, 8.75, -7, 1, 8.5, -17, 1, 7, -7, 1, 6.75)
+polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(5, 4, 6), PackedInt32Array(6, 4, 7), PackedInt32Array(10, 9, 8), PackedInt32Array(13, 12, 11), PackedInt32Array(8, 13, 10), PackedInt32Array(10, 13, 11), PackedInt32Array(10, 11, 7), PackedInt32Array(10, 7, 3), PackedInt32Array(11, 6, 7), PackedInt32Array(3, 0, 10), PackedInt32Array(1, 2, 14), PackedInt32Array(14, 2, 15), PackedInt32Array(4, 5, 16), PackedInt32Array(16, 5, 17), PackedInt32Array(16, 17, 18), PackedInt32Array(19, 18, 20), PackedInt32Array(19, 21, 18), PackedInt32Array(18, 21, 16), PackedInt32Array(22, 14, 15), PackedInt32Array(24, 23, 22), PackedInt32Array(24, 22, 25), PackedInt32Array(25, 22, 15), PackedInt32Array(28, 27, 26), PackedInt32Array(23, 24, 29), PackedInt32Array(29, 24, 26), PackedInt32Array(26, 24, 28), PackedInt32Array(29, 30, 9), PackedInt32Array(9, 30, 8), PackedInt32Array(26, 30, 29), PackedInt32Array(33, 32, 31), PackedInt32Array(19, 20, 34), PackedInt32Array(34, 12, 19), PackedInt32Array(19, 12, 33), PackedInt32Array(19, 33, 31), PackedInt32Array(12, 13, 35), PackedInt32Array(12, 35, 33), PackedInt32Array(32, 27, 31), PackedInt32Array(31, 27, 28)]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ehkex"]
 
@@ -94,47 +93,48 @@ material = SubResource("StandardMaterial3D_ehkex")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qfwyk"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_bvc7t"]
+
 [node name="Node3D" type="Node3D" unique_id=1641939658]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1635118531]
-
-[node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=768595748]
-anchors_preset = -1
-anchor_right = 0.0640625
-offset_right = 4.0
-offset_bottom = 27.0
-max_value = 3.0
-value = 3.0
-metadata/_edit_use_anchors_ = true
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=373521167]
+environment = SubResource("Environment_owiiy")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=861037075]
 transform = Transform3D(0.7071068, 0.35355338, -0.61237246, 0, 0.8660254, 0.50000006, 0.7071068, -0.35355338, 0.61237246, -8, 8.055338, 8)
+light_color = Color(0.41598046, 0.41598043, 0.4159804, 1)
 shadow_enabled = true
 
-[node name="Player" type="CharacterBody3D" parent="." unique_id=1666494784]
+[node name="PlayerCamera3D" type="Camera3D" parent="." unique_id=1400375129 node_paths=PackedStringArray("player")]
+transform = Transform3D(-5.9604645e-08, -1.7763568e-15, 1, -2.9802322e-08, 1, 0, -1, -2.9802322e-08, -5.9604645e-08, -12, 2.0000005, 8)
+current = true
+script = ExtResource("1_bvc7t")
+player = NodePath("../Player")
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=2015468372]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12, 2, 8)
 script = ExtResource("1_vr8k8")
 
-[node name="Leon" type="MeshInstance3D" parent="Player" unique_id=904005644]
+[node name="Leon" type="MeshInstance3D" parent="Player" unique_id=1494291630]
 transform = Transform3D(-0.05, 0, -4.371139e-09, 0, 0.05, 0, 4.371139e-09, 0, -0.05, 0, -1, 0)
 layers = 2
-material_override = SubResource("ShaderMaterial_elmk5")
+material_override = SubResource("ShaderMaterial_r667m")
 mesh = ExtResource("4_qfwyk")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=2131547702]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=846635439]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.43025732, 0)
-shape = SubResource("CylinderShape3D_m1aan")
+shape = SubResource("CylinderShape3D_bvc7t")
 
-[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="Player" unique_id=1063778005 node_paths=PackedStringArray("player")]
+[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="Player" unique_id=1924643923 node_paths=PackedStringArray("player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.99597347, 0)
 script = ExtResource("5_a7hxv")
 player = NodePath("..")
 
-[node name="RayCast3D" type="RayCast3D" parent="Player/FootstepPlayer" unique_id=177472504]
+[node name="RayCast3D" type="RayCast3D" parent="Player/FootstepPlayer" unique_id=1920099438]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99597347, 0)
 target_position = Vector3(0, -1.5, 0)
 
-[node name="SpotLight3D" type="SpotLight3D" parent="Player" unique_id=1396702578]
+[node name="SpotLight3D" type="SpotLight3D" parent="Player" unique_id=1051313868]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72256804, -0.58021474)
 light_color = Color(1, 0.94509804, 0.8392157, 1)
 light_energy = 25.0
@@ -142,22 +142,20 @@ light_indirect_energy = 10.0
 light_volumetric_fog_energy = 3.0
 spot_range = 6.0
 spot_angle = 40.52274
-script = ExtResource("6_p8mh7")
 
-[node name="FootGlow" type="Sprite3D" parent="Player" unique_id=1716137158]
-transform = Transform3D(0.14999996, 0, 0, 0, -6.556707e-09, 1, 0, -0.14999996, -4.3711385e-08, 0, -0.9, 0)
-material_override = SubResource("StandardMaterial3D_4v5vt")
-texture = ExtResource("7_b6a15")
+[node name="HoldPosition" type="Node3D" parent="Player" unique_id=1818516927]
 
-[node name="Camera3D" type="Camera3D" parent="Player" unique_id=2045144945]
-transform = Transform3D(1, 2.1855694e-08, 5.856215e-09, -2.1855694e-08, 0.86602545, 0.5, 5.856215e-09, -0.5, 0.86602545, 0, 3.0000002, 1)
-current = true
+[node name="Interact3D" type="RayCast3D" parent="Player" unique_id=397316171]
+target_position = Vector3(0, 0, -1)
+collision_mask = 2
+collide_with_areas = true
 
-[node name="Enemy" type="CharacterBody3D" parent="." unique_id=1743884153 node_paths=PackedStringArray("target", "patrol_points")]
+[node name="Enemy" type="CharacterBody3D" parent="." unique_id=1743884153 node_paths=PackedStringArray("target", "patrol_points_1", "patrol_points_2")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -35, 1, 8)
 script = ExtResource("9_njvmk")
 target = NodePath("../Player")
-patrol_points = [NodePath("../PatrolPoints/PatrolPoint1"), NodePath("../PatrolPoints/PatrolPoint2"), NodePath("../PatrolPoints/PatrolPoint3"), NodePath("../PatrolPoints/PatrolPoint4"), NodePath("../PatrolPoints/PatrolPoint5")]
+patrol_points_1 = [NodePath("../PatrolRoutes/Route1/PatrolPoint1"), NodePath("../PatrolRoutes/Route1/PatrolPoint2"), NodePath("../PatrolRoutes/Route1/PatrolPoint3"), NodePath("../PatrolRoutes/Route1/PatrolPoint4"), NodePath("../PatrolRoutes/Route1/PatrolPoint5")]
+patrol_points_2 = [NodePath("../PatrolRoutes/Route2/PatrolPoint1"), NodePath("../PatrolRoutes/Route2/PatrolPoint2"), NodePath("../PatrolRoutes/Route2/PatrolPoint3"), NodePath("../PatrolRoutes/Route2/PatrolPoint4"), NodePath("../PatrolRoutes/Route2/PatrolPoint5")]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Enemy" unique_id=1968098918]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
@@ -180,12 +178,19 @@ target_position = Vector3(0, 0, -6)
 stream = ExtResource("10_owiiy")
 volume_db = -28.0
 
+[node name="OmniLight3D" type="OmniLight3D" parent="Enemy" unique_id=96940225]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+light_color = Color(1, 0, 0, 1)
+light_energy = 2.0
+light_indirect_energy = 2.0
+light_volumetric_fog_energy = 3.0
+
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=124517392]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.231995, 0, 8)
 navigation_mesh = SubResource("NavigationMesh_cc3f6")
 
 [node name="Ground" type="MeshInstance3D" parent="NavigationRegion3D" unique_id=498077530]
-transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 27.499998, 0, 0, 0)
+transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 49.499996, 0, 0, -11)
 mesh = SubResource("BoxMesh_cnhax")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/Ground" unique_id=389632849]
@@ -223,25 +228,64 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 1.9073486e-06, 0, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/LowWall/StaticBody3D" unique_id=1337109933]
 shape = SubResource("BoxShape3D_qfwyk")
 
-[node name="PatrolPoints" type="Node3D" parent="." unique_id=1589712039]
+[node name="PatrolRoutes" type="Node3D" parent="." unique_id=1589712039]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -35, 1, 8)
 
-[node name="PatrolPoint1" type="Node3D" parent="PatrolPoints" unique_id=185568782]
+[node name="Route1" type="Node3D" parent="PatrolRoutes" unique_id=554030303]
+
+[node name="PatrolPoint1" type="Node3D" parent="PatrolRoutes/Route1" unique_id=185568782]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
 
-[node name="PatrolPoint2" type="Node3D" parent="PatrolPoints" unique_id=1502831432]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -22)
+[node name="PatrolPoint2" type="Node3D" parent="PatrolRoutes/Route1" unique_id=1502831432]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.999998, 0, -22)
 
-[node name="PatrolPoint3" type="Node3D" parent="PatrolPoints" unique_id=992207872]
+[node name="PatrolPoint3" type="Node3D" parent="PatrolRoutes/Route1" unique_id=992207872]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -23)
 
-[node name="PatrolPoint4" type="Node3D" parent="PatrolPoints" unique_id=533511103]
+[node name="PatrolPoint4" type="Node3D" parent="PatrolRoutes/Route1" unique_id=533511103]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 23)
 
-[node name="PatrolPoint5" type="Node3D" parent="PatrolPoints" unique_id=427180558]
+[node name="PatrolPoint5" type="Node3D" parent="PatrolRoutes/Route1" unique_id=427180558]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 23)
+
+[node name="Route2" type="Node3D" parent="PatrolRoutes" unique_id=1268263199]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 0)
+
+[node name="PatrolPoint1" type="Node3D" parent="PatrolRoutes/Route2" unique_id=1568126766]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
+
+[node name="PatrolPoint2" type="Node3D" parent="PatrolRoutes/Route2" unique_id=1598587551]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.999998, 0, -22)
+
+[node name="PatrolPoint3" type="Node3D" parent="PatrolRoutes/Route2" unique_id=1150910347]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -23)
+
+[node name="PatrolPoint4" type="Node3D" parent="PatrolRoutes/Route2" unique_id=77545475]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 23)
+
+[node name="PatrolPoint5" type="Node3D" parent="PatrolRoutes/Route2" unique_id=245892517]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 23)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=421202440]
 stream = ExtResource("8_2lgdx")
 volume_db = -20.0
 autoplay = true
+
+[node name="Area3D" type="Area3D" parent="." unique_id=490531453 node_paths=PackedStringArray("player", "enemy")]
+transform = Transform3D(50.4, 0, 0, 0, 4.8, 0, 0, 0, 1, -35, 3, -4)
+script = ExtResource("12_r667m")
+player = NodePath("../Player")
+enemy = NodePath("../Enemy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1719993991]
+shape = SubResource("BoxShape3D_bvc7t")
+
+[node name="Area3D2" type="Area3D" parent="." unique_id=1730699219 node_paths=PackedStringArray("player", "enemy")]
+transform = Transform3D(50.4, 0, 0, 0, 4.8, 0, 0, 0, 1, -35, 3, -6)
+script = ExtResource("12_r667m")
+player = NodePath("../Player")
+enemy = NodePath("../Enemy")
+patrol_group_to_set = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2" unique_id=380328127]
+shape = SubResource("BoxShape3D_bvc7t")

@@ -1,10 +1,16 @@
 [gd_scene format=4 uid="uid://2gskjq56nigd"]
 
+[ext_resource type="Script" uid="uid://dvbovgiro50ie" path="res://MenuButtons.gd" id="1_826wr"]
 [ext_resource type="Shader" uid="uid://c2jh875a4nmd6" path="res://scripts/shaders/PS1 Model.gdshader" id="1_ow34m"]
 [ext_resource type="Texture2D" uid="uid://x30gn6taokf0" path="res://models/leon.png" id="2_l72w3"]
 [ext_resource type="ArrayMesh" uid="uid://cf0cgec0tg044" path="res://models/leon.obj" id="3_826wr"]
 [ext_resource type="Texture2D" uid="uid://dlh8kftyao7dv" path="res://models/EM12B.png" id="4_ucygd"]
 [ext_resource type="AudioStream" uid="uid://60gruf8hvf0y" path="res://audio/RE2 OST - Front Hall.mp3" id="5_l72w3"]
+
+[sub_resource type="Environment" id="Environment_l72w3"]
+background_mode = 1
+fog_enabled = true
+volumetric_fog_enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mipys"]
 render_priority = 0
@@ -58,47 +64,78 @@ shadow_mesh = SubResource("ArrayMesh_go7fu")
 
 [node name="Node3D" type="Node3D" unique_id=1642647240]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=635603015]
+environment = SubResource("Environment_l72w3")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=875875823]
+script = ExtResource("1_826wr")
 
-[node name="Button" type="Button" parent="CanvasLayer" unique_id=1131289136]
-offset_left = 279.0
-offset_top = 250.0
-offset_right = 328.0
-offset_bottom = 281.0
-text = "Jugar"
+[node name="Start" type="Button" parent="CanvasLayer" unique_id=1131289136]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -28.5
+offset_top = 9.0
+offset_right = 28.5
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Iniciar"
 
-[node name="Button2" type="Button" parent="CanvasLayer" unique_id=1111046966]
-offset_left = 272.0
-offset_top = 288.0
-offset_right = 330.0
-offset_bottom = 319.0
-text = "Quitar"
+[node name="Quit" type="Button" parent="CanvasLayer" unique_id=1111046966]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -29.0
+offset_top = 47.0
+offset_right = 29.0
+offset_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Sair"
 
 [node name="Label" type="Label" parent="CanvasLayer" unique_id=1459081986]
-offset_left = 199.00002
-offset_top = 114.0
-offset_right = 260.0
-offset_bottom = 137.0
-scale = Vector2(3.1599996, 3.1599996)
-text = "El Juego"
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -61.5
+offset_top = -49.0
+offset_right = 61.5
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Perna Cabeluda"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Leon" type="MeshInstance3D" parent="." unique_id=395325577]
-transform = Transform3D(-0.04829629, 0, 0.012940948, 0, 0.05, 0, -0.012940948, 0, -0.04829629, 0, 0.51487803, 0)
+[node name="Player" type="MeshInstance3D" parent="." unique_id=395325577]
+transform = Transform3D(-0.04829629, 0, 0.012940948, 0, 0.05, 0, -0.012940948, 0, -0.04829629, 0, 0.51487803, 1)
 layers = 2
 material_override = SubResource("ShaderMaterial_mipys")
 mesh = ExtResource("3_826wr")
 
 [node name="ConcreteFloor" type="StaticBody3D" parent="." unique_id=858738527 groups=["concrete"]]
-transform = Transform3D(18.857368, 0, 0, 0, 1, 0, 0, 0, 18.857368, 8, 0, 8)
+transform = Transform3D(29.040348, 0, 0, 0, 1, 0, 0, 0, 18.857368, 9, 0, 8)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ConcreteFloor" unique_id=1995954763]
 mesh = SubResource("BoxMesh_8a8k8")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1115827109]
-transform = Transform3D(0.024999999, 0, 0.043301273, 0, 0.05, 0, -0.043301273, 0, 0.024999999, 21, 0, 8)
+[node name="HairyLeg" type="MeshInstance3D" parent="." unique_id=1115827109]
+transform = Transform3D(0.024999999, 0, 0.043301273, 0, 0.05, 0, -0.043301273, 0, 0.024999999, 21, 0.5, 8)
 mesh = SubResource("ArrayMesh_7la6k")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="HairyLeg" unique_id=2053520347]
+transform = Transform3D(19.999998, 0, 0, 0, 19.999998, 0, 0, 0, 19.999998, 0, 21.999998, 0)
+light_color = Color(1, 0, 0, 1)
+light_energy = 2.0
+light_indirect_energy = 2.0
+light_volumetric_fog_energy = 3.0
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1299108319]
 transform = Transform3D(-0.8660254, 0, -0.50000006, 0, 1, 0, 0.50000006, 0, -0.8660254, 0, 3, -2)
@@ -110,3 +147,6 @@ autoplay = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1379572087]
 transform = Transform3D(-0.7071067, 0.18301275, -0.6830127, 0, 0.9659259, 0.25881907, 0.7071068, 0.18301271, -0.68301266, -4, 2, -2)
+
+[connection signal="pressed" from="CanvasLayer/Start" to="CanvasLayer" method="_on_start_pressed"]
+[connection signal="pressed" from="CanvasLayer/Quit" to="CanvasLayer" method="_on_quit_pressed"]

@@ -1,6 +1,10 @@
-Camera3D
-Node3D
+WorldEnvironment
+OmniLight3D
 CollisionShape3D
+Area3D
+Node3D
+TextureRect
+Camera3D
 MeshInstance3D
 StaticBody3D
 RigidBody3D

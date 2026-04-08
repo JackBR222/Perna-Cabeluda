@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://dq4mxhgfl3a56"]
+
+[ext_resource type="AudioStream" uid="uid://60gruf8hvf0y" path="res://audio/RE2 OST - Front Hall.mp3" id="1_bhka4"]
+[ext_resource type="Script" uid="uid://bdreqgh6sqyrj" path="res://scripts/Player_Camera.gd" id="2_rpd0d"]
+[ext_resource type="Script" uid="uid://b1mvd3uenyu1j" path="res://scripts/player.gd" id="3_mnd27"]
+[ext_resource type="Shader" uid="uid://c2jh875a4nmd6" path="res://scripts/shaders/PS1 Model.gdshader" id="4_plcak"]
+[ext_resource type="Texture2D" uid="uid://x30gn6taokf0" path="res://models/leon.png" id="5_05qj8"]
+[ext_resource type="ArrayMesh" uid="uid://cf0cgec0tg044" path="res://models/leon.obj" id="6_07v2l"]
+[ext_resource type="Script" uid="uid://d124pmhe32yqs" path="res://scripts/FootstepSoundManager.gd" id="7_hb6vj"]
+
+[sub_resource type="Environment" id="Environment_at5dv"]
+background_mode = 1
+fog_enabled = true
+volumetric_fog_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ehkex"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_8uh7m"]
+material = SubResource("StandardMaterial3D_ehkex")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8uh7m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xersf"]
+albedo_color = Color(0, 0.5137255, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_00tp4"]
+material = SubResource("StandardMaterial3D_xersf")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jcd4p"]
+render_priority = 0
+shader = ExtResource("4_plcak")
+shader_parameter/affine_mapping = true
+shader_parameter/albedo = ExtResource("5_05qj8")
+shader_parameter/alpha_scissor = 0.5
+shader_parameter/jitter = 0.50000002375
+shader_parameter/resolution = Vector2i(320, 240)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_uacia"]
+height = 2.855423
+radius = 0.48242188
+
+[node name="Node3D" type="Node3D" unique_id=125137730]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=895054562]
+environment = SubResource("Environment_at5dv")
+
+[node name="Grounds" type="Node3D" parent="." unique_id=1915957028]
+
+[node name="ConcreteFloor" type="StaticBody3D" parent="Grounds" unique_id=1358993214 groups=["concrete"]]
+transform = Transform3D(14.088083, 0, 0, 0, 1, 0, 0, 0, 14.088083, 0, 0, 7)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grounds/ConcreteFloor" unique_id=510703504]
+mesh = SubResource("BoxMesh_8uh7m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grounds/ConcreteFloor" unique_id=1536690964]
+shape = SubResource("BoxShape3D_8uh7m")
+
+[node name="GrassFloor" type="StaticBody3D" parent="Grounds" unique_id=632879325 groups=["grass"]]
+transform = Transform3D(14, 0, 0, 0, 1, 0, 0, 0, 14, 0, 0, -7)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Grounds/GrassFloor" unique_id=1318103426]
+mesh = SubResource("BoxMesh_00tp4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Grounds/GrassFloor" unique_id=1446937604]
+shape = SubResource("BoxShape3D_8uh7m")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1121823387]
+stream = ExtResource("1_bhka4")
+volume_db = -25.0
+autoplay = true
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=920688703]
+transform = Transform3D(1.9106855e-15, -1, -4.371139e-08, -4.371139e-08, -4.371139e-08, 1, -1, 0, -4.371139e-08, 0, 9, 0)
+light_energy = 25.0
+shadow_enabled = true
+spot_range = 10.0
+spot_angle = 31.224258
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=164582667]
+transform = Transform3D(0.7071068, 0.35355338, -0.61237246, 0, 0.8660254, 0.50000006, 0.7071068, -0.35355338, 0.61237246, -8, 8.055338, 8)
+light_color = Color(0.41598046, 0.41598043, 0.4159804, 1)
+shadow_enabled = true
+
+[node name="PlayerCamera3D" type="Camera3D" parent="." unique_id=1639632788 node_paths=PackedStringArray("player")]
+transform = Transform3D(-5.9604645e-08, -1.7763568e-15, 1, -2.9802322e-08, 1, 0, -1, -2.9802322e-08, -5.9604645e-08, -12, 2.0000005, 8)
+current = true
+script = ExtResource("2_rpd0d")
+player = NodePath("../Player")
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=281019680]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2, 0)
+script = ExtResource("3_mnd27")
+
+[node name="Leon" type="MeshInstance3D" parent="Player" unique_id=645185142]
+transform = Transform3D(-0.05, 0, -4.371139e-09, 0, 0.05, 0, 4.371139e-09, 0, -0.05, 0, -1, 0)
+layers = 2
+material_override = SubResource("ShaderMaterial_jcd4p")
+mesh = ExtResource("6_07v2l")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=300667327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.43025732, 0)
+shape = SubResource("CylinderShape3D_uacia")
+
+[node name="FootstepPlayer" type="AudioStreamPlayer3D" parent="Player" unique_id=1683227806 node_paths=PackedStringArray("player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.99597347, 0)
+script = ExtResource("7_hb6vj")
+player = NodePath("..")
+
+[node name="RayCast3D" type="RayCast3D" parent="Player/FootstepPlayer" unique_id=1224009698]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.99597347, 0)
+target_position = Vector3(0, -1.5, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Player" unique_id=1111061844]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72256804, -0.58021474)
+light_color = Color(1, 0.94509804, 0.8392157, 1)
+light_energy = 25.0
+light_indirect_energy = 10.0
+light_volumetric_fog_energy = 3.0
+spot_range = 6.0
+spot_angle = 40.52274
+
+[node name="HoldPosition" type="Node3D" parent="Player" unique_id=758762137]
+
+[node name="Interact3D" type="RayCast3D" parent="Player" unique_id=435080092]
+target_position = Vector3(0, 0, -1)
+collision_mask = 2
+collide_with_areas = true

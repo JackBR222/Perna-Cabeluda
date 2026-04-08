@@ -1,3 +1,14 @@
+res://dialogue/test.dtl
 res://scenes/ItemTest.tscn
-res://HideSpot.gd
+res://DialogueTest.gd
 res://scripts/player.gd
+res://HideSpot.gd
+res://Player_Camera.gd
+res://scripts/enemy_AI.gd
+res://scenes/EnemyAITest.tscn
+res://AreaTrigger.gd
+res://scenes/test.tscn
+res://scenes/FloorTest.tscn
+res://scenes/InteractTest.tscn
+res://scenes/MainMenu.tscn
+res://MenuButtons.gd

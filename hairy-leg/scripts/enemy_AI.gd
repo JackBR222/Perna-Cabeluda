@@ -8,7 +8,12 @@ extends CharacterBody3D
 @export var target: CharacterBody3D
 
 # CONFIGURAÇÃO
-@export var patrol_points: Array[Node3D] = []
+@export var patrol_points_1: Array[Node3D] = []
+@export var patrol_points_2: Array[Node3D] = []
+@export var patrol_points_3: Array[Node3D] = []
+@export var patrol_points_4: Array[Node3D] = []
+@export var patrol_points_5: Array[Node3D] = []
+
 @export var speed_walk: float = 1.7
 @export var speed_run: float = 3.0
 @export var attack_range: float = 2.0
@@ -24,8 +29,13 @@ const SMOOTHING_FACTOR = 0.2
 enum State { IDLE, PATROL, INVESTIGATE, CHASE, ATTACK, RETURN }
 var state: State = State.IDLE
 
+# PATRULHA
 var patrol_index := 0
 var patrol_timer := 0.0
+var current_patrol_group: Array[Node3D] = []
+var last_patrol_group: Array[Node3D] = []
+var current_patrol_group_number: int = 1  # rastreia o grupo atual
+
 var investigate_timer := 0.0
 var investigate_position: Vector3
 var return_position: Vector3
@@ -44,7 +54,9 @@ func _ready() -> void:
 	else:
 		print("Alvo definido manualmente:", target.name)
 
-	_enter_state(State.IDLE if patrol_points.is_empty() else State.PATROL)
+	# inicia com a primeira rota por padrão
+	_set_patrol_group(patrol_points_1, 1)
+	_enter_state(State.IDLE if current_patrol_group.is_empty() else State.PATROL)
 
 # LOOP PRINCIPAL
 func _physics_process(_delta: float) -> void:
@@ -111,12 +123,11 @@ func _state_chase(_delta: float) -> void:
 		_enter_state(State.INVESTIGATE)
 
 func _state_attack() -> void:
-	# só dispara ataque uma vez por entrada no estado
 	if not is_attacking:
 		is_attacking = true
 		velocity = Vector3.ZERO
-		print("Ataque!")  # apenas uma vez
-		# anim.play("Attack")  # futuramente quando tiver animação
+		print("Ataque!")
+		# anim.play("Attack")
 		await get_tree().create_timer(attack_duration).timeout
 		_enter_state(State.CHASE)
 
@@ -141,13 +152,13 @@ func _enter_state(new_state: State) -> void:
 		State.CHASE, State.INVESTIGATE:
 			return_position = global_transform.origin
 		State.ATTACK:
-			is_attacking = false  # reseta para permitir novo ataque
+			is_attacking = false
 
 func _update_agent_target() -> void:
 	match state:
 		State.PATROL:
-			if patrol_points.size() > 0:
-				agent.set_target_position(patrol_points[patrol_index].global_transform.origin)
+			if current_patrol_group.size() > 0:
+				agent.set_target_position(current_patrol_group[patrol_index].global_transform.origin)
 		State.INVESTIGATE:
 			agent.set_target_position(investigate_position)
 		State.CHASE:
@@ -157,16 +168,16 @@ func _update_agent_target() -> void:
 			agent.set_target_position(return_position)
 
 func _walk_to(next_pos: Vector3, speed: float) -> void:
-	# anim.play("Walk")  # futuramente
+	# anim.play("Walk")
 	_move_towards(next_pos, speed)
 
 func _stop_and_idle() -> void:
 	velocity = Vector3.ZERO
-	# anim.play("Idle")  # futuramente
+	# anim.play("Idle")
 
 func _go_to_next_patrol_point() -> void:
-	patrol_index = (patrol_index + 1) % patrol_points.size()
-	agent.set_target_position(patrol_points[patrol_index].global_transform.origin)
+	patrol_index = (patrol_index + 1) % current_patrol_group.size()
+	agent.set_target_position(current_patrol_group[patrol_index].global_transform.origin)
 
 func _move_towards(next_pos: Vector3, speed: float) -> void:
 	var dir = next_pos - global_transform.origin
@@ -219,3 +230,32 @@ func hear_noise(pos: Vector3) -> void:
 	if state not in [State.CHASE, State.ATTACK]:
 		investigate_position = pos
 		_enter_state(State.INVESTIGATE)
+
+# =======================
+# PATRULHA - MUDANÇA DE GRUPO
+# =======================
+func set_patrol_group(group_number: int) -> void:
+	var new_group: Array[Node3D] = []
+	match group_number:
+		1: new_group = patrol_points_1
+		2: new_group = patrol_points_2
+		3: new_group = patrol_points_3
+		4: new_group = patrol_points_4
+		5: new_group = patrol_points_5
+		_:
+			print("Grupo de patrulha inválido:", group_number)
+			return
+
+	# ignora se for o mesmo grupo
+	if new_group == current_patrol_group:
+		return
+
+	_set_patrol_group(new_group, group_number)
+
+func _set_patrol_group(group: Array[Node3D], group_number: int = 1) -> void:
+	last_patrol_group = current_patrol_group
+	current_patrol_group = group
+	current_patrol_group_number = group_number
+	patrol_index = 0
+	if current_patrol_group.size() > 0:
+		agent.set_target_position(current_patrol_group[patrol_index].global_transform.origin)
