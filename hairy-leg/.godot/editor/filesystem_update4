@@ -1,14 +1,16 @@
-res://dialogue/test.dtl
-res://scenes/ItemTest.tscn
-res://DialogueTest.gd
+res://scenes/FloorTest.scn
 res://scripts/player.gd
-res://HideSpot.gd
-res://Player_Camera.gd
+res://scenes/EnemyAITest.scn
 res://scripts/enemy_AI.gd
-res://scenes/EnemyAITest.tscn
-res://AreaTrigger.gd
-res://scenes/test.tscn
-res://scenes/FloorTest.tscn
+res://scripts/PlayerCamera.gd
+res://scripts/shaders/PS1 Model.gdshader
+res://dialogue/testDoor.dtl
 res://scenes/InteractTest.tscn
-res://scenes/MainMenu.tscn
-res://MenuButtons.gd
+res://scripts/Item.gd
+res://scripts/Door.gd
+res://scripts/test_scripts/DialogueTest.gd
+res://scripts/Player.gd
+res://scripts/PlayerFootsteps.gd
+res://prefabs/player.tscn
+res://scenes/test/InteractTest.tscn
+res://scenes/test/EnemyAITest.scn

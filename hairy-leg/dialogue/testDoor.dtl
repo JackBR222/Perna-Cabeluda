@@ -1,0 +1,6 @@
+if {player_item_type} == "red":
+	Item certo!
+elif {player_item_type} == "none":
+	Sem item.
+else:
+	Item errado.

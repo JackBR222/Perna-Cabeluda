@@ -1,52 +1,88 @@
 extends StaticBody3D
 class_name Door
 
-# Configurações da porta
-@export var required_item_type: String = "key"       # Tipo de item necessário
-@export var open_rotation: Vector3 = Vector3(0, 90, 0)
-@export var closed_rotation: Vector3 = Vector3.ZERO
+@export var required_item_type: String = "key"
 
+var current_player: Player = null
 var is_open: bool = false
-var door_mesh: MeshInstance3D
-var collision_shape: CollisionShape3D
 
-# Setup automático
-func _ready() -> void:
-	for child in get_children():
-		if child is MeshInstance3D:
-			door_mesh = child
-		elif child is CollisionShape3D:
-			collision_shape = child
-	
-	if door_mesh:
-		door_mesh.rotation_degrees = closed_rotation
-	
-	if not collision_shape:
-		push_warning("Porta precisa de CollisionShape3D para ser detectável pelo RayCast do Player!")
 
-# Interação chamada pelo Player
+# =========================
+# INTERAÇÃO
+# =========================
 func interact(player: Node) -> void:
 	if not player is Player:
 		return
 
+	# ❌ bloqueia interação se já estiver aberta
 	if is_open:
-		print("Porta já está aberta")
+		return
+
+	current_player = player
+
+	_update_dialogic_variables(player)
+	start_dialog()
+
+
+# =========================
+# START DIALOG
+# =========================
+func start_dialog() -> void:
+	if current_player:
+		current_player.input_enabled = false
+
+	if Dialogic.timeline_ended.is_connected(_on_timeline_ended):
+		Dialogic.timeline_ended.disconnect(_on_timeline_ended)
+
+	Dialogic.timeline_ended.connect(_on_timeline_ended)
+
+	Dialogic.start("testDoor")
+
+
+# =========================
+# FINAL DO DIALOGO
+# =========================
+func _on_timeline_ended() -> void:
+	if Dialogic.timeline_ended.is_connected(_on_timeline_ended):
+		Dialogic.timeline_ended.disconnect(_on_timeline_ended)
+
+	if current_player:
+		current_player.input_enabled = true
+
+		var item = current_player.held_item
+
+		# ✔ abre porta somente uma vez
+		if item != null and item.item_type == required_item_type:
+			_open_door(current_player)
+
+	current_player = null
+
+
+# =========================
+# ABRIR PORTA
+# =========================
+func _open_door(player: Player) -> void:
+	is_open = true  # 🔥 bloqueia futuras interações
+
+	var item = player.held_item
+
+	if item != null:
+		item.consume()
+
+	# opcional: feedback visual
+	print("Porta aberta!")
+
+
+# =========================
+# DIALOGIC VARIABLES
+# =========================
+func _update_dialogic_variables(player: Player) -> void:
+	if not Engine.has_singleton("Dialogic"):
 		return
 
 	if player.held_item == null:
-		print("Você não está segurando nenhum item")
-		return
-
-	if player.held_item.item_type == required_item_type:
-		open()
+		Dialogic.VAR.set("player_item_type", "none")
 	else:
-		print("Item incorreto para esta porta")
+		Dialogic.VAR.set("player_item_type", player.held_item.item_type)
 
-# Abrir porta
-func open() -> void:
-	is_open = true
-	print("Porta abriu!")
-	if door_mesh:
-		door_mesh.rotation_degrees = open_rotation
-	if collision_shape:
-		collision_shape.disabled = true
+	Dialogic.VAR.set("door_required_item", required_item_type)

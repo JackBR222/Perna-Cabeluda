@@ -1,0 +1,158 @@
+[gd_scene format=3 uid="uid://pxpvsgcff23m"]
+
+[ext_resource type="Texture2D" uid="uid://cvn1mbspcs8gg" path="res://sprites/vignette.png" id="1_hciqx"]
+[ext_resource type="Script" uid="uid://bdreqgh6sqyrj" path="res://scripts/PlayerCamera.gd" id="2_m06vb"]
+[ext_resource type="PackedScene" uid="uid://0fdmw1np2u7t" path="res://prefabs/player.tscn" id="3_ngdl4"]
+[ext_resource type="AudioStream" uid="uid://60gruf8hvf0y" path="res://audio/RE2 OST - Front Hall.mp3" id="4_26hvw"]
+[ext_resource type="Script" uid="uid://uqmuwnp5deeq" path="res://scripts/Item.gd" id="5_kcoou"]
+[ext_resource type="Script" uid="uid://cxmn0pa1crnmp" path="res://scripts/Door.gd" id="6_ys4ql"]
+[ext_resource type="Script" uid="uid://0p1dce0j6uif" path="res://scripts/test_scripts/DialogueTest.gd" id="7_wpx7n"]
+[ext_resource type="Script" uid="uid://cgqjw3mnl16qx" path="res://scripts/HideSpot.gd" id="8_e2mxm"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_cc3f6"]
+vertices = PackedVector3Array(-24.5, 1, -13.249999, -24.5, 1, 13.250001, 24.5, 1, 13.250001, 24.5, 1, -13.249999)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ehkex"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cnhax"]
+material = SubResource("StandardMaterial3D_ehkex")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cc3f6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y2yx8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dwvmw"]
+albedo_color = Color(0.32780465, 0.34044865, 0.8223146, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_80uqq"]
+material = SubResource("StandardMaterial3D_dwvmw")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_etjxt"]
+albedo_color = Color(0.7736467, 0, 0.2759378, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_dwvmw"]
+material = SubResource("StandardMaterial3D_etjxt")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_80uqq"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_80uqq"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_s7o4p"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wrtx3"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_m4kft"]
+
+[node name="Node3D" type="Node3D" unique_id=1641939658]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1635118531]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=85191523]
+offset_right = 640.0
+offset_bottom = 480.0
+texture = ExtResource("1_hciqx")
+expand_mode = 1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=861037075]
+transform = Transform3D(0.7071068, 0.35355338, -0.61237246, 0, 0.8660254, 0.50000006, 0.7071068, -0.35355338, 0.61237246, -8, 8.055338, 8)
+shadow_enabled = true
+
+[node name="PlayerCamera3D" type="Camera3D" parent="." unique_id=2045144945 node_paths=PackedStringArray("player")]
+current = true
+script = ExtResource("2_m06vb")
+player = NodePath("../Player")
+
+[node name="Player" parent="." unique_id=2006470671 instance=ExtResource("3_ngdl4")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -11, 2, 0)
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=124517392]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.231995, 0, 8)
+navigation_mesh = SubResource("NavigationMesh_cc3f6")
+
+[node name="Ground" type="MeshInstance3D" parent="NavigationRegion3D" unique_id=498077530]
+transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 27.499998, 0, 0, 0)
+mesh = SubResource("BoxMesh_cnhax")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/Ground" unique_id=389632849]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Ground/StaticBody3D" unique_id=1776754320]
+shape = SubResource("BoxShape3D_cc3f6")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=421202440]
+stream = ExtResource("4_26hvw")
+volume_db = -20.0
+autoplay = true
+
+[node name="Item" type="RigidBody3D" parent="." unique_id=45962762]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1.6930428, 11)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("5_kcoou")
+item_type = "blue"
+hold_offset = Vector3(0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Item" unique_id=441509877]
+shape = SubResource("BoxShape3D_y2yx8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Item" unique_id=237124766]
+mesh = SubResource("BoxMesh_80uqq")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Item" unique_id=459966739]
+
+[node name="Item2" type="RigidBody3D" parent="." unique_id=600390419]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1.3860855, 15)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("5_kcoou")
+item_type = "red"
+hold_offset = Vector3(0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Item2" unique_id=1338776718]
+shape = SubResource("BoxShape3D_y2yx8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Item2" unique_id=145345234]
+mesh = SubResource("BoxMesh_dwvmw")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Item2" unique_id=1762363123]
+
+[node name="Door" type="StaticBody3D" parent="." unique_id=234814389]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.573737, 1.6640158, 13)
+collision_layer = 3
+script = ExtResource("6_ys4ql")
+required_item_type = "red"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Door" unique_id=655421442]
+shape = SubResource("BoxShape3D_80uqq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Door" unique_id=812664257]
+mesh = SubResource("PrismMesh_80uqq")
+
+[node name="NPC" type="StaticBody3D" parent="." unique_id=1682183927]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.147474, 1.3280315, 8)
+collision_layer = 2
+script = ExtResource("7_wpx7n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NPC" unique_id=243180184]
+shape = SubResource("BoxShape3D_80uqq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NPC" unique_id=1251162228]
+mesh = SubResource("CapsuleMesh_s7o4p")
+
+[node name="HideSpot" type="StaticBody3D" parent="." unique_id=1212616177 node_paths=PackedStringArray("hide_point", "exit_position", "vignette", "player_camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 1, 4)
+collision_layer = 3
+script = ExtResource("8_e2mxm")
+hide_point = NodePath("MeshInstance3D")
+exit_position = NodePath("ExitPosition")
+vignette = NodePath("../CanvasLayer/TextureRect")
+player_camera = NodePath("../PlayerCamera3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HideSpot" unique_id=1326424627]
+mesh = SubResource("CylinderMesh_wrtx3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HideSpot" unique_id=1090366814]
+shape = SubResource("CylinderShape3D_m4kft")
+
+[node name="ExitPosition" type="Node3D" parent="HideSpot" unique_id=1995578012]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)

@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://dvbovgiro50ie" path="res://MenuButtons.gd" id="1_826wr"]
 [ext_resource type="Shader" uid="uid://c2jh875a4nmd6" path="res://scripts/shaders/PS1 Model.gdshader" id="1_ow34m"]
-[ext_resource type="Texture2D" uid="uid://x30gn6taokf0" path="res://models/leon.png" id="2_l72w3"]
-[ext_resource type="ArrayMesh" uid="uid://cf0cgec0tg044" path="res://models/leon.obj" id="3_826wr"]
-[ext_resource type="Texture2D" uid="uid://dlh8kftyao7dv" path="res://models/EM12B.png" id="4_ucygd"]
+[ext_resource type="Texture2D" uid="uid://x30gn6taokf0" path="res://models/placeholder/leon.png" id="2_l72w3"]
+[ext_resource type="ArrayMesh" uid="uid://cf0cgec0tg044" path="res://models/placeholder/leon.obj" id="3_826wr"]
+[ext_resource type="Texture2D" uid="uid://dlh8kftyao7dv" path="res://models/placeholder/EM12B.png" id="4_ucygd"]
 [ext_resource type="AudioStream" uid="uid://60gruf8hvf0y" path="res://audio/RE2 OST - Front Hall.mp3" id="5_l72w3"]
 
 [sub_resource type="Environment" id="Environment_l72w3"]

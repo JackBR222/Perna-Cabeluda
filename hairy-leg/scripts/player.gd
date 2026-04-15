@@ -19,19 +19,25 @@ var input_running := false
 # NODES
 @onready var interaction_ray: RayCast3D = $Interact3D
 @onready var hold_position: Node3D = $HoldPosition
+@onready var anim: AnimationPlayer = $AnimationPlayer
 
 # ITENS
 var held_item: Item = null
 
-# PASSOS
-var step_timer: float = 0.0
-@export var walk_step_interval: float = 0.6
-@export var run_step_interval: float = 0.35
-
 # QUICK TURN
-@export var quick_turn_speed: float = 720.0 # graus por segundo
+@export var quick_turn_speed: float = 720.0
 var is_quick_turning: bool = false
 var target_rotation_y: float = 0.0
+
+# ANIMAÇÃO
+var current_anim: String = ""
+func get_current_anim() -> String:
+	return current_anim
+
+# READY
+func _ready() -> void:
+	_setup_animation_loops()
+
 
 # LOOP PRINCIPAL
 func _physics_process(delta: float) -> void:
@@ -39,36 +45,39 @@ func _physics_process(delta: float) -> void:
 		_apply_gravity(delta)
 		move_and_slide()
 		return
-	
+
 	_read_input()
 	_apply_rotation(delta)
 	_apply_movement()
 	_apply_gravity(delta)
-	_handle_footsteps(delta)
-	
+	_update_animation()
+
 	move_and_slide()
+
 
 # INPUT
 func _read_input() -> void:
 	input_turn = Input.get_axis("turn_left", "turn_right")
 	input_forward = Input.get_axis("move_backward", "move_forward")
 	input_running = Input.is_action_pressed("run")
-	
-	# Quick turn só inicia se não estiver girando
+
 	if Input.is_action_just_pressed("quick_turn") and not is_quick_turning:
 		_start_quick_turn()
+
 
 func _start_quick_turn() -> void:
 	is_quick_turning = true
 	target_rotation_y = rotation_degrees.y + 180.0
 	target_rotation_y = fmod(target_rotation_y, 360.0)
 
+
+# ROTATION
 func _apply_rotation(delta: float) -> void:
 	if is_quick_turning:
 		var difference = (target_rotation_y - rotation_degrees.y)
 		difference = fmod(difference + 180.0, 360.0) - 180.0
 		var step = quick_turn_speed * delta
-		
+
 		if abs(difference) <= step:
 			rotation_degrees.y = target_rotation_y
 			is_quick_turning = false
@@ -77,46 +86,111 @@ func _apply_rotation(delta: float) -> void:
 	else:
 		rotation_degrees.y -= input_turn * turn_speed * delta
 
+
 # MOVIMENTO
 func _apply_movement() -> void:
-	var speed = run_speed if input_running else walk_speed
+	var speed = walk_speed
+
+	if input_running and input_forward > 0.1:
+		speed = run_speed
+
 	var direction = -basis.z * input_forward
+
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
 
+
+# GRAVIDADE
 func _apply_gravity(delta: float) -> void:
 	if is_on_floor():
 		velocity.y = -2.0
 	else:
 		velocity.y += GRAVITY * delta
 
-# PASSOS
-func _handle_footsteps(delta: float) -> void:
-	var moving = abs(input_forward) > 0.1
-	if is_on_floor() and moving:
-		var interval = run_step_interval if input_running else walk_step_interval
-		step_timer -= delta
-		if step_timer <= 0.0:
-			$FootstepPlayer.play()
-			step_timer = interval
+
+# ANIMAÇÃO
+func _setup_animation_loops() -> void:
+	var loop_anims = [
+		"Figner|Forward Move",
+		"Figner|Backward Move",
+		"Figner|Idle",
+		"Figner|Turn Left",
+		"Figner|Turn Right",
+		"Figner|Run"
+	]
+
+	for anim_name in loop_anims:
+		var animation = anim.get_animation(anim_name)
+		if animation:
+			animation.loop_mode = Animation.LOOP_LINEAR
+
+
+func _update_animation() -> void:
+	if is_quick_turning:
+		_play_anim("Figner|Turn 180", 2.5)
+		return
+
+	var moving_forward = input_forward > 0.1
+	var moving_backward = input_forward < -0.1
+	var turning = abs(input_turn) > 0.1
+
+	# CORRER (somente pra frente)
+	if moving_forward and input_running:
+		_play_anim("Figner|Run")
+	elif moving_forward:
+		_play_anim("Figner|Forward Move")
+	elif moving_backward:
+		_play_anim("Figner|Backward Move")
+	elif turning:
+		if input_turn > 0:
+			_play_anim("Figner|Turn Right")
+		else:
+			_play_anim("Figner|Turn Left")
 	else:
-		step_timer = 0.0
+		_play_anim("Figner|Idle")
+
+
+func _play_anim(anim_name: String, speed: float = 1.0) -> void:
+	if current_anim == anim_name and anim.speed_scale == speed:
+		return
+
+	current_anim = anim_name
+	anim.play(anim_name)
+	anim.speed_scale = speed
+
 
 # INTERAÇÃO
 func _unhandled_input(event: InputEvent) -> void:
 	if not input_enabled:
 		return
-	
+
 	if event.is_action_pressed("interact"):
 		_handle_interaction()
+
 
 func _handle_interaction() -> void:
 	if not interaction_ray.is_colliding():
 		return
-	
+
 	var collider = interaction_ray.get_collider()
 	if collider.has_method("interact"):
 		collider.interact(self)
+
+
+# CONGELAR INPUT
+func freeze_input() -> void:
+	input_enabled = false
+	input_turn = 0.0
+	input_forward = 0.0
+	input_running = false
+	velocity = Vector3.ZERO
+	is_quick_turning = false
+	_play_anim("Figner|Idle")
+
+
+func unfreeze_input() -> void:
+	input_enabled = true
+
 
 # MORTE
 func die() -> void:
