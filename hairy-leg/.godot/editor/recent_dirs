@@ -1,7 +1,11 @@
-res://prefabs/
 res://models/map/
+res://models/map/textures/
+res://scripts/
+res://prefabs/
+res://models/map/area4/
+res://models/map/area3/
+res://audio/sounds/
 res://scenes/
 res://dialogue/
 res://scenes/test/
-res://scripts/
 res://sprites/

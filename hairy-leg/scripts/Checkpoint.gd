@@ -9,7 +9,7 @@ const SAVE_PATH := "user://save.dat"
 # Mapeamento de checkpoints → cenas
 var checkpoint_cenas := {
 	-1: "res://scenes/test/CheckpointTest_1.scn",
-	 0: "res://cenas/inicio.tscn",
+	 0: "res://scenes/Game.scn",
 	 1: "res://cenas/fase_25.tscn",
 	 2: "res://cenas/fase_50.tscn",
 	 3: "res://cenas/fase_75.tscn",

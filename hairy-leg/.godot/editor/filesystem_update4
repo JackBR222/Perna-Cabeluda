@@ -1,11 +1,10 @@
-res://scenes/test/FloorTest.scn
+res://scenes/test/InteractTest.tscn
 res://scripts/shaders/PS1 Model.gdshader
-res://scripts/Player.gd
-res://scripts/PlayerCamera.gd
-res://models/map/Guarita.tscn
-res://scenes/Game.scn
-res://models/map/CasaMendigo.tscn
 res://sprites/ShinyAnim.tres
-res://scripts/MenuButtons.gd
+res://models/map/Grade.tscn
+res://scenes/Game.scn
+res://models/map/PortaoAberto.tscn
+res://models/map/PortaoAnimado.tscn
 res://scenes/GameOver.tscn
-res://scenes/MainMenu.tscn
+res://models/map/PortaoFechado.tscn
+res://scripts/GateController.gd

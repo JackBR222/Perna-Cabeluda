@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dd5rtn88u1on2"]
+
+[ext_resource type="Texture2D" uid="uid://cvn1mbspcs8gg" path="res://sprites/vignette.png" id="1_vxx0o"]
+[ext_resource type="Script" uid="uid://cqtr3kwn8vr7p" path="res://scripts/FadeController.gd" id="2_xtb4j"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=427799503]
+
+[node name="Vignette" type="TextureRect" parent="." unique_id=45292469]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_vxx0o")
+expand_mode = 1
+
+[node name="FadeInOut" type="ColorRect" parent="." unique_id=1305935129]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("2_xtb4j")

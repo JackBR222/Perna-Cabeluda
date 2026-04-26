@@ -1,23 +1,17 @@
 extends Area3D
 
-# =======================
 # Referências diretas
-# =======================
-@export var player: CharacterBody3D
-@export var enemy: Node  # referência ao nó do inimigo (com Enemy.gd)
+@onready var player = get_tree().current_scene.get_node("Player/Player")
+@onready var enemy = get_tree().current_scene.get_node("Enemy")
 
 # Grupo de patrulha que o inimigo deve mudar
 @export var patrol_group_to_set: int = 1
 
-# =======================
 # READY
-# =======================
 func _ready() -> void:
 	connect("body_entered", Callable(self, "_on_body_entered"))
 
-# =======================
 # DETECÇÃO DE ENTRADA
-# =======================
 func _on_body_entered(body: Node) -> void:
 	# checa referências válidas
 	if not player or not enemy:

@@ -1,7 +1,5 @@
 extends Camera3D
 
-@export var player: CharacterBody3D
-
 @export var distance: float = 3.5
 @export var height: float = 4.5
 @export var rotation_speed: float = 90.0
@@ -17,6 +15,7 @@ extends Camera3D
 var current_angle: float = 0.0
 var last_input_time: float = 0.0
 
+@onready var player = get_tree().current_scene.get_node("Player/Player")
 @onready var spring_arm: SpringArm3D = get_parent() as SpringArm3D
 
 func _ready():

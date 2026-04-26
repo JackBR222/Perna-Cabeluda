@@ -1,8 +1,6 @@
 extends StaticBody3D
 class_name HideSpot
 
-@export var player_camera: Camera3D
-
 @export var hidden_distance: float = 2
 @export var hidden_height: float = 2.5
 @export var hidden_rotation_speed: float = 45.0
@@ -11,6 +9,7 @@ class_name HideSpot
 
 @onready var exit_position: Node3D = $ExitPosition
 @onready var hide_point: MeshInstance3D = _find_hide_point()
+@onready var player_camera = get_tree().current_scene.get_node("Player/SpringArm3D/Camera3D")
 @onready var vignette = get_tree().current_scene.get_node("CanvasLayer/Vignette")
 @onready var icon: Sprite3D = $InteractionIcon
 
@@ -23,7 +22,6 @@ var original_rotation_speed: float
 
 var can_interact: bool = true
 var is_targeted: bool = false
-
 
 # INIT 
 func _ready() -> void:
@@ -72,13 +70,6 @@ func hide_player(player: Player) -> void:
 
 	if hide_point:
 		player.global_transform = hide_point.global_transform
-
-	if not player_camera:
-		player_camera = player.get_node_or_null("Camera3D")
-
-	if not player_camera:
-		push_warning("Camera3D não encontrada!")
-		return
 
 	original_distance = player_camera.distance
 	original_height = player_camera.height
