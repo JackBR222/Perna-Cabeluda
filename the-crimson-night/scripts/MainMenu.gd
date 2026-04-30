@@ -175,7 +175,7 @@ func _input(event: InputEvent) -> void:
 		return
 
 	if not started:
-		if event is InputEventKey and event.pressed:
+		if event.is_pressed():
 			started = true
 			stop_any_press_pulse()
 			await open_main_menu()

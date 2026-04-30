@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://bxqsdre283u4u"]
 
-[ext_resource type="PackedScene" uid="uid://mut23eano326" path="res://models/interactable/Caixa de G aberta.fbx" id="1_n36ky"]
+[ext_resource type="PackedScene" uid="uid://mut23eano326" path="res://models/interactable/GBoxOpened.fbx" id="1_n36ky"]
 [ext_resource type="Material" uid="uid://dwoigief2glcy" path="res://models/interactable/FuseBoxMaterial.tres" id="2_ncbrh"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_3i87c"]

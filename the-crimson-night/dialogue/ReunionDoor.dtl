@@ -1,0 +1,7 @@
+if {player_item_type} == "Crowbar":
+	quebrado
+	[signal arg="consume:Crowbar"]
+	[signal arg="reveal:Card"]
+	[signal arg="lock_interaction"]
+else:
+	Talvez eu possa usar algo para quebrar

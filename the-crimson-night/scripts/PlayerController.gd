@@ -7,8 +7,8 @@ var input_enabled: bool = true
 
 # CONFIGURAÇÕES
 @export var turn_speed: float = 120.0
-@export var walk_speed: float = 2.0
-@export var run_speed: float = 4.5
+@export var walk_speed: float = 3.0
+@export var run_speed: float = 5.6
 const GRAVITY: float = -9.81
 
 # INPUT CACHE
@@ -33,7 +33,7 @@ var held_item: Node = null
 var current_target: Node = null
 
 # QUICK TURN
-@export var quick_turn_speed: float = 720.0
+@export var quick_turn_speed: float = 270.0
 var is_quick_turning: bool = false
 var target_rotation_y: float = 0.0
 

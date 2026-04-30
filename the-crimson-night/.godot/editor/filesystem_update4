@@ -1,3 +1,5 @@
+res://scenes/Game.scn
 res://scripts/shaders/PS1 Model.gdshader
 res://sprites/ShinyAnim.tres
-res://scenes/Game.scn
+res://scripts/PlayerCamera.gd
+res://prefabs/Player.scn

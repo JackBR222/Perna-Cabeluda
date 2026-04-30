@@ -59,8 +59,8 @@ func _detect_gamepad_type() -> InputType:
 	elif "nintendo" in name or "switch" in name or "joy" in name:
 		return InputType.NINTENDO
 
-	# fallback → assume Nintendo (melhor que genérico)
-	return InputType.NINTENDO
+	# fallback → assume Xbox (melhor que genérico)
+	return InputType.XBOX
 
 
 # ATUALIZAR ÍCONE

@@ -1,19 +1,9 @@
 [gd_scene format=4 uid="uid://qcy21w235n1l"]
 
 [ext_resource type="PackedScene" uid="uid://dno4744h6mh5d" path="res://models/map/import/EspaçoBrincar.fbx" id="1_wucwk"]
-[ext_resource type="Shader" uid="uid://c2jh875a4nmd6" path="res://scripts/shaders/PS1 Model.gdshader" id="2_n288p"]
 [ext_resource type="Texture2D" uid="uid://bvgupq0q0opvf" path="res://models/map/textures/Concreto.png" id="2_nuax8"]
 [ext_resource type="Texture2D" uid="uid://bv78x02d31pnj" path="res://models/map/area3/Telha branca.png" id="3_n288p"]
 [ext_resource type="Texture2D" uid="uid://dcqxcoaxq44vv" path="res://models/map/area3/Tijolo.png" id="4_gi7y4"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gi7y4"]
-render_priority = 0
-shader = ExtResource("2_n288p")
-shader_parameter/affine_mapping = false
-shader_parameter/albedo = ExtResource("2_nuax8")
-shader_parameter/alpha_scissor = 0.5
-shader_parameter/jitter = 0.50000002375
-shader_parameter/resolution = Vector2i(320, 240)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_70dy3"]
 resource_name = "Concreto"
@@ -56,15 +46,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_67lwf")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nuax8"]
-render_priority = 0
-shader = ExtResource("2_n288p")
-shader_parameter/affine_mapping = false
-shader_parameter/albedo = ExtResource("2_nuax8")
-shader_parameter/alpha_scissor = 0.5
-shader_parameter/jitter = 0.50000002375
-shader_parameter/resolution = Vector2i(320, 240)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cx71a"]
 resource_name = "Concreto"
 vertex_color_use_as_albedo = true
@@ -105,15 +86,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_gagwa")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_n288p"]
-render_priority = 0
-shader = ExtResource("2_n288p")
-shader_parameter/affine_mapping = false
-shader_parameter/albedo = ExtResource("3_n288p")
-shader_parameter/alpha_scissor = 0.5
-shader_parameter/jitter = 0.50000002375
-shader_parameter/resolution = Vector2i(320, 240)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3pjmw"]
 resource_name = "Telha"
@@ -215,15 +187,12 @@ data = PackedVector3Array(-0.107099995, 0.0026, 0.70379996, -0.0954, 0.0026, 0.7
 transform = Transform3D(0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0, 0, 0)
 
 [node name="Cube_001" parent="." index="0" unique_id=2138133451]
-material_override = SubResource("ShaderMaterial_gi7y4")
 mesh = SubResource("ArrayMesh_qywox")
 
 [node name="Cylinder" parent="." index="1" unique_id=259911787]
-material_override = SubResource("ShaderMaterial_nuax8")
 mesh = SubResource("ArrayMesh_g8wj2")
 
 [node name="Cylinder_001" parent="." index="2" unique_id=1124133769]
-material_override = SubResource("ShaderMaterial_n288p")
 mesh = SubResource("ArrayMesh_t2rk2")
 
 [node name="Parede frente" parent="." index="3" unique_id=642862332]

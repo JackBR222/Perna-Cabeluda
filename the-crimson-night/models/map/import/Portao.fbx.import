@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bjjft1ihj0ajs"
-path="res://.godot/imported/Caixa de G Fechada.fbx-888a5376dca78923fca30c799f4fbbe1.scn"
+uid="uid://b1clykfg2se3o"
+path="res://.godot/imported/Portao.fbx-14794512588da15fc90a738d8d5cea04.scn"
 
 [deps]
 
-source_file="res://models/interactable/Caixa de G Fechada.fbx"
-dest_files=["res://.godot/imported/Caixa de G Fechada.fbx-888a5376dca78923fca30c799f4fbbe1.scn"]
+source_file="res://models/map/import/Portao.fbx"
+dest_files=["res://.godot/imported/Portao.fbx-14794512588da15fc90a738d8d5cea04.scn"]
 
 [params]
 

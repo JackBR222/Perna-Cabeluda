@@ -223,18 +223,6 @@ transform = Transform3D(-0.4, 0, -3.4969112e-08, 0, 0.4, 0, 3.4969112e-08, 0, -0
 [node name="Grade76" parent="." unique_id=37344899 instance=ExtResource("1_8xgfu")]
 transform = Transform3D(-0.4, 0, -3.4969112e-08, 0, 0.4, 0, 3.4969112e-08, 0, -0.4, 249, -1.2, 161)
 
-[node name="Grade77" parent="." unique_id=200845457 instance=ExtResource("1_8xgfu")]
-transform = Transform3D(-0.4, 0, -3.4969112e-08, 0, 0.4, 0, 3.4969112e-08, 0, -0.4, 256, -1.2, 161)
-
-[node name="Grade78" parent="." unique_id=68114918 instance=ExtResource("1_8xgfu")]
-transform = Transform3D(-0.4, 0, -3.4969112e-08, 0, 0.4, 0, 3.4969112e-08, 0, -0.4, 263, -1.2, 161)
-
-[node name="Grade79" parent="." unique_id=2084547917 instance=ExtResource("1_8xgfu")]
-transform = Transform3D(-0.4, 0, -3.4969112e-08, 0, 0.4, 0, 3.4969112e-08, 0, -0.4, 270, -1.2, 161)
-
-[node name="Grade80" parent="." unique_id=1905097978 instance=ExtResource("1_8xgfu")]
-transform = Transform3D(-0.4, 0, -3.4969112e-08, 0, 0.4, 0, 3.4969112e-08, 0, -0.4, 277, -1.2, 161)
-
 [node name="Grade81" parent="." unique_id=1405157345 instance=ExtResource("1_8xgfu")]
 transform = Transform3D(-0.4, 0, -3.4969112e-08, 0, 0.4, 0, 3.4969112e-08, 0, -0.4, 284, -1.2, 161)
 

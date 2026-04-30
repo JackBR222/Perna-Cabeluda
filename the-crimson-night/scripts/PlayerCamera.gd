@@ -1,7 +1,7 @@
 extends Camera3D
 
 @export var distance: float = 3.5
-@export var height: float = 4.5
+@export var height: float = 7
 @export var rotation_speed: float = 90.0
 @export var smooth_speed: float = 5.0
 @export var vertical_offset: float = 3.0
@@ -9,8 +9,10 @@ extends Camera3D
 @export var auto_follow_delay: float = 1.0
 @export var auto_follow_speed: float = 5.0
 
-# NOVO
-@export var run_speed_threshold: float = 4.0
+@export var run_speed_threshold: float = 4.5
+
+@export var position_smoothness: float = 10.0
+@export var rotation_smoothness: float = 10.0
 
 var current_angle: float = 0.0
 var last_input_time: float = 0.0
@@ -25,7 +27,8 @@ func _ready():
 	if not spring_arm:
 		push_error("Camera precisa estar dentro de um SpringArm3D!")
 
-func _process(delta):
+# IMPORTANTE: usar physics para evitar jitter
+func _physics_process(delta):
 	handle_input(delta)
 	update_camera(delta)
 
@@ -48,10 +51,8 @@ func handle_input(delta):
 
 # DETECÇÃO DE CORRIDA
 func is_running() -> bool:
-	# input de movimento
 	var input_dir = Input.get_vector("turn_left", "turn_right", "move_forward", "move_backward")
 
-	# velocidade horizontal (ignora Y)
 	var horizontal_velocity = player.velocity
 	horizontal_velocity.y = 0
 
@@ -73,11 +74,14 @@ func update_camera(delta):
 
 	var player_pos = player.global_transform.origin
 
-	# posição
 	var target_pos = player_pos + Vector3(0, height, 0)
+
+	# suavização exponencial
+	var t = 1.0 - exp(-position_smoothness * delta)
+
 	spring_arm.global_position = spring_arm.global_position.lerp(
 		target_pos,
-		smooth_speed * delta
+		t
 	)
 
 	spring_arm.spring_length = distance
@@ -86,14 +90,15 @@ func update_camera(delta):
 	if is_running() and last_input_time >= auto_follow_delay:
 		var target_angle = get_player_angle()
 
+		var rot_t = 1.0 - exp(-rotation_smoothness * delta)
+
 		current_angle = rad_to_deg(lerp_angle(
 			deg_to_rad(current_angle),
 			deg_to_rad(target_angle),
-			auto_follow_speed * delta
+			rot_t
 		))
 
 	# rotação
 	spring_arm.rotation.y = deg_to_rad(current_angle)
 
-	# olhar para
 	look_at(player_pos + Vector3(0, vertical_offset, 0), Vector3.UP)

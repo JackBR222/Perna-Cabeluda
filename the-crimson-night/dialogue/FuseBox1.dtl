@@ -1,6 +1,7 @@
-if {player_item_type} == "FuseBoxKey":
-	Abriu!
-	[signal arg="reveal:ItemTest"]
-	[signal arg="consume:FuseBoxKey"]
+if {player_item_type} == "Fuse":
+	abriu o portão
+	[signal arg="consume:Fuse"]
+	[signal arg="change_model_main"]
+	[signal arg="open_gate"]
 else:
 	Uma caixa de fusíveis... Falta um fusível...

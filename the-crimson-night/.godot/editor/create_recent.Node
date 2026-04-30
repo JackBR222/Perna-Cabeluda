@@ -1,6 +1,7 @@
+Node3D
+MeshInstance3D
 NavigationObstacle3D
 CollisionShape3D
-Node3D
 Label
 AudioStreamPlayer
 CanvasLayer
@@ -11,4 +12,3 @@ CollisionPolygon3D
 BoneAttachment3D
 StaticBody3D
 NavigationRegion3D
-GridContainer

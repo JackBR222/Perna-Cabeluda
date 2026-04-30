@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dvbovgiro50ie" path="res://scripts/MainMenu.gd" id="1_826wr"]
 [ext_resource type="Texture2D" uid="uid://bm06brnjm1fwl" path="res://sprites/menu/MenuStart.png" id="2_2wh52"]
 [ext_resource type="Texture2D" uid="uid://ci4y3et5iutyi" path="res://sprites/menu/MenuMain.png" id="3_826wr"]
-[ext_resource type="Texture2D" uid="uid://u0fyu70yi7e4" path="res://sprites/menu/AnyButtonStart.png" id="3_ow34m"]
 [ext_resource type="Texture2D" uid="uid://b2cg3ox6dlfgr" path="res://sprites/menu/ButtonStart.png" id="4_7la6k"]
 [ext_resource type="Texture2D" uid="uid://c2opl2ahyymtr" path="res://sprites/menu/MenuConfig.png" id="4_ucygd"]
 [ext_resource type="AudioStream" uid="uid://60gruf8hvf0y" path="res://audio/RE2 OST - Front Hall.mp3" id="5_l72w3"]
@@ -21,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://1cmtmik2tsh6" path="res://sprites/menu/ButtonMenu.png" id="17_viowm"]
 [ext_resource type="Texture2D" uid="uid://df0qfwm3dmsq" path="res://sprites/menu/ButtonPressMenu.png" id="18_1n6yq"]
 [ext_resource type="Texture2D" uid="uid://bqf6j5315qy84" path="res://sprites/menu/ButtonSelectMenu.png" id="19_yovvs"]
+[ext_resource type="Texture2D" uid="uid://cayfmxuyq6b22" path="res://sprites/menu/botõesOF.png" id="21_viowm"]
 
 [node name="Node3D" type="Node3D" unique_id=1642647240]
 
@@ -218,7 +218,7 @@ offset_right = 332.45947
 offset_bottom = -56.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("3_ow34m")
+texture = ExtResource("21_viowm")
 expand_mode = 1
 
 [connection signal="pressed" from="CanvasLayer/ScrollContainer/VBoxContainer/StartButton" to="CanvasLayer" method="_on_start_button_pressed"]

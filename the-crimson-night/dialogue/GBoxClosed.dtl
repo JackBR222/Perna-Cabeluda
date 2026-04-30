@@ -1,0 +1,9 @@
+if {player_item_type} == "Wrench":
+	Abriu
+	[signal arg="consume:Wrench"]
+	[signal arg="change_timeline_alt"]
+	[signal arg="change_model_alt"]
+	[signal arg="reveal:Fuse"]
+	Um fusível
+else:
+	Precisa de uma chave inglesa para abrir...

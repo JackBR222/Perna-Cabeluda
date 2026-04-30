@@ -10,6 +10,8 @@ var is_open: bool = false
 
 func _ready():
 	_set_closed_pose()
+	Dialogic.signal_event.connect(_on_dialogic_signal)
+
 
 	#await get_tree().create_timer(1.0).timeout
 	#open_gate()
@@ -62,3 +64,8 @@ func _finish_opening():
 		opened_gate.global_transform = global_transform
 
 	queue_free()
+	
+func _on_dialogic_signal(argument: String) -> void:
+
+		if argument == "open_gate":
+			open_gate()
