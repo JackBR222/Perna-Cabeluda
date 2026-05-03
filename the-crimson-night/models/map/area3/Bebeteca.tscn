@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://xp4q33tafic8" path="res://models/map/import/bebeteca.fbx" id="1_4jkv2"]
 [ext_resource type="Texture2D" uid="uid://dcqxcoaxq44vv" path="res://models/map/area3/Tijolo.png" id="2_d16sq"]
-[ext_resource type="Shader" uid="uid://c2jh875a4nmd6" path="res://scripts/shaders/PS1 Model.gdshader" id="2_gdyde"]
 [ext_resource type="Texture2D" uid="uid://bv78x02d31pnj" path="res://models/map/area3/Telha branca.png" id="3_gdyde"]
 [ext_resource type="Texture2D" uid="uid://bire28o8oo40s" path="res://models/map/area3/Vidro.png" id="4_u8ray"]
 
@@ -49,15 +48,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ey1uc")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jvdo2"]
-render_priority = 0
-shader = ExtResource("2_gdyde")
-shader_parameter/affine_mapping = false
-shader_parameter/albedo = ExtResource("3_gdyde")
-shader_parameter/alpha_scissor = 0.5
-shader_parameter/jitter = 0.50000002375
-shader_parameter/resolution = Vector2i(320, 240)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lh03p"]
 resource_name = "Telhado.001"
 vertex_color_use_as_albedo = true
@@ -100,15 +90,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_r4oml")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hauty"]
-render_priority = 0
-shader = ExtResource("2_gdyde")
-shader_parameter/affine_mapping = false
-shader_parameter/albedo = ExtResource("4_u8ray")
-shader_parameter/alpha_scissor = 0.5
-shader_parameter/jitter = 0.50000002375
-shader_parameter/resolution = Vector2i(320, 240)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4kcm0"]
 resource_name = "Vidro.002"
@@ -210,15 +191,12 @@ transform = Transform3D(0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0, 0, 0)
 mesh = SubResource("ArrayMesh_hauty")
 
 [node name="Circle_002" parent="." index="1" unique_id=1994131926]
-material_override = SubResource("ShaderMaterial_jvdo2")
 mesh = SubResource("ArrayMesh_sgcn5")
 
 [node name="Parede frente_001" parent="." index="2" unique_id=1558102107]
-material_override = SubResource("ShaderMaterial_hauty")
 mesh = SubResource("ArrayMesh_lyvrd")
 
 [node name="Parede frente_002" parent="." index="3" unique_id=35167676]
-material_override = SubResource("ShaderMaterial_hauty")
 mesh = SubResource("ArrayMesh_1dxad")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." index="4" unique_id=427987178]

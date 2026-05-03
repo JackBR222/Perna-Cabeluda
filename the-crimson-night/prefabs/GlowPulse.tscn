@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cfgvhilqj4lj6"]
+
+[ext_resource type="SpriteFrames" uid="uid://8lg41k1kg8a8" path="res://sprites/ShinyAnim.tres" id="1_1w41e"]
+[ext_resource type="Script" uid="uid://cs5i6m6byjk2b" path="res://scripts/GlowPulse.gd" id="2_il2wb"]
+
+[node name="GlowPulse" type="AnimatedSprite3D" unique_id=924555723]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+billboard = 1
+texture_filter = 0
+sprite_frames = ExtResource("1_1w41e")
+script = ExtResource("2_il2wb")

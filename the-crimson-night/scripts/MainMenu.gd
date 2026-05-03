@@ -6,286 +6,333 @@ extends CanvasLayer
 @export var fade_speed_intro: float = 1.0
 @export var fade_speed_menu: float = 0.2
 
+# PANELS
+@export var press_start_panel: Control
+@export var main_panel: Control
+@export var options_panel: Control
+
 # UI
 @export var menu_background: TextureRect
 @export var fade_overlay: ColorRect
-@export var scroll_container: ScrollContainer
-@export var vbox_container: VBoxContainer
-@export var options_panel: Control
 @export var options_back_button: BaseButton
 @export var any_press_start: TextureRect
 
-# OPÇÕES DE ÁUDIO
+# BOTÕES
+@export var start_button: BaseButton
+@export var continue_button: BaseButton
+@export var options_button: BaseButton
+@export var quit_button: BaseButton
+
+# ÁUDIO
 @export var music_slider: HSlider
 @export var sfx_slider: HSlider
+
+@onready var sfx_preview_player: AudioStreamPlayer = $SFXPreviewPlayer
 
 # BACKGROUNDS
 @export var bg_press_start: Texture2D
 @export var bg_main_menu: Texture2D
 @export var bg_options_menu: Texture2D
 
+# SONS DE UI
+@export var ui_click_sound: AudioStream
+@export var ui_hover_sound: AudioStream
+
 var tween: Tween
-var started: bool = false
-var in_options: bool = false
-var input_locked: bool = false
-
-var original_textures := {}
-var hover_tweens := {}
-
 var any_press_tween: Tween
 
+var started := false
+var in_options := false
+var input_locked := false
 
-# INICIALIZAÇÃO
+var has_checkpoint := false
+var any_press_active := true
+
+# sistema de pulse de foco
+var focus_tweens := {}
+
+var can_play_music_preview := false
+var can_play_sfx_preview := true
+
+# SONS DE UI
+@onready var ui_sfx: AudioStreamPlayer = AudioStreamPlayer.new()
+@onready var ui_hover_sfx: AudioStreamPlayer = AudioStreamPlayer.new()
+
+
+# INIT
 func _ready() -> void:
 	fade_overlay.modulate.a = 1.0
 
-	scroll_container.visible = false
-	scroll_container.focus_mode = Control.FOCUS_NONE
+	add_child(ui_sfx)
+	ui_sfx.bus = "SFX"
+	ui_sfx.stream = ui_click_sound
+
+	add_child(ui_hover_sfx)
+	ui_hover_sfx.bus = "SFX"
+	ui_hover_sfx.stream = ui_hover_sound
+
+	press_start_panel.visible = true
+	main_panel.visible = false
 	options_panel.visible = false
-	any_press_start.visible = true
 
 	menu_background.texture = bg_press_start
 
-	register_buttons()
-	start_any_press_pulse()
 	setup_audio_sliders()
+	check_checkpoint_state()
+	connect_button_sounds()
+
+	start_any_press_pulse()
 	await initial_sequence()
+	set_focus(start_button)
 
 
-# SISTEMA DE ÁUDIO
-func setup_audio_sliders() -> void:
-	var music_bus := AudioServer.get_bus_index("Music")
-	var sfx_bus := AudioServer.get_bus_index("SFX")
+# BLOQUEIO DE INPUT
+func set_ui_blocked(blocked: bool) -> void:
+	var mode := Control.MOUSE_FILTER_IGNORE if blocked else Control.MOUSE_FILTER_STOP
 
-	if music_slider:
-		music_slider.value = db_to_linear(AudioServer.get_bus_volume_db(music_bus))
-		music_slider.value_changed.connect(_on_music_changed)
+	var controls := [
+		press_start_panel, main_panel, options_panel,
+		start_button, continue_button, options_button, quit_button,
+		options_back_button, music_slider, sfx_slider, any_press_start
+	]
 
-	if sfx_slider:
-		sfx_slider.value = db_to_linear(AudioServer.get_bus_volume_db(sfx_bus))
-		sfx_slider.value_changed.connect(_on_sfx_changed)
+	for c in controls:
+		if c: c.mouse_filter = mode
 
-
-func _on_music_changed(value: float) -> void:
-	var bus := AudioServer.get_bus_index("Music")
-	AudioServer.set_bus_volume_db(bus, linear_to_db(value))
+	for b in [start_button, continue_button, options_button, quit_button, options_back_button]:
+		if b: b.disabled = blocked
 
 
-func _on_sfx_changed(value: float) -> void:
-	var bus := AudioServer.get_bus_index("SFX")
-	AudioServer.set_bus_volume_db(bus, linear_to_db(value))
+# SONS DE UI
+func play_ui_click() -> void:
+	if ui_sfx.stream:
+		ui_sfx.play()
 
 
-# BOTÕES
-func register_buttons() -> void:
-	for child in vbox_container.get_children():
-		if child is TextureButton:
-			_register_button(child)
-
-	if options_back_button and options_back_button is TextureButton:
-		_register_button(options_back_button)
+func play_ui_hover() -> void:
+	if ui_hover_sfx.stream and not any_press_active:
+		ui_hover_sfx.play()
 
 
-func _register_button(btn: TextureButton) -> void:
-	original_textures[btn] = {
-		"normal": btn.texture_normal,
-		"hover": btn.texture_hover,
-		"pressed": btn.texture_pressed
-	}
+# FOCO + PULSE
+func connect_button_sounds() -> void:
+	var buttons = [start_button, continue_button, options_button, quit_button, options_back_button]
 
-	btn.focus_entered.connect(_on_button_focus_entered.bind(btn))
-	btn.focus_exited.connect(_on_button_focus_exited.bind(btn))
-	btn.button_down.connect(_on_button_down.bind(btn))
-	btn.button_up.connect(_on_button_up.bind(btn))
+	for btn in buttons:
+		if not btn: continue
+		btn.focus_entered.connect(func(): on_button_focus(btn))
+		btn.focus_exited.connect(func(): on_button_unfocus(btn))
 
 
-# VISUAL BOTÕES
-func _on_button_focus_entered(btn: TextureButton) -> void:
-	btn.texture_normal = original_textures[btn]["hover"]
-	start_hover_pulse(btn)
+func on_button_focus(btn: Control) -> void:
+	play_ui_hover()
+	start_focus_pulse(btn)
 
 
-func _on_button_focus_exited(btn: TextureButton) -> void:
-	btn.texture_normal = original_textures[btn]["normal"]
-	stop_hover_pulse(btn)
+func on_button_unfocus(btn: Control) -> void:
+	stop_focus_pulse(btn)
+	btn.modulate = Color.WHITE
 
 
-func _on_button_down(btn: TextureButton) -> void:
-	btn.texture_normal = original_textures[btn]["pressed"]
-
-
-func _on_button_up(btn: TextureButton) -> void:
-	if btn.has_focus():
-		btn.texture_normal = original_textures[btn]["hover"]
-	else:
-		btn.texture_normal = original_textures[btn]["normal"]
-
-
-# PULSE DE HOVER
-func start_hover_pulse(btn: TextureButton) -> void:
-	stop_hover_pulse(btn)
+func start_focus_pulse(btn: Control) -> void:
+	stop_focus_pulse(btn)
 
 	var t := create_tween().set_loops()
-	hover_tweens[btn] = t
+	focus_tweens[btn] = t
 
-	t.tween_property(btn, "modulate", Color(1.8, 1.8, 1.8, 1), 0.6)
-	t.tween_property(btn, "modulate", Color(0.5, 0.5, 0.5, 1), 0.6)
-
-
-func stop_hover_pulse(btn: TextureButton) -> void:
-	if hover_tweens.has(btn):
-		hover_tweens[btn].kill()
-		hover_tweens.erase(btn)
-		btn.modulate = Color(1, 1, 1, 1)
+	t.tween_property(btn, "modulate", Color(1.6,1.6,1.6), 0.4)
+	t.tween_property(btn, "modulate", Color(1.1,1.1,1.1), 0.4)
 
 
-# ANY PRESS
-func start_any_press_pulse() -> void:
-	if any_press_tween:
-		any_press_tween.kill()
-
-	any_press_tween = create_tween().set_loops()
-
-	any_press_tween.tween_property(any_press_start, "modulate",
-		Color(1.4, 1.4, 1.4, 1), 0.8)
-
-	any_press_tween.tween_property(any_press_start, "modulate",
-		Color(0.8, 0.8, 0.8, 1), 0.8)
+func stop_focus_pulse(btn: Control) -> void:
+	if focus_tweens.has(btn):
+		focus_tweens[btn].kill()
+		focus_tweens.erase(btn)
 
 
-func stop_any_press_pulse() -> void:
-	if any_press_tween:
-		any_press_tween.kill()
-		any_press_tween = null
-	any_press_start.modulate = Color(1, 1, 1, 1)
+# FOCO INICIAL
+func set_focus(node: Control) -> void:
+	if not node: return
+	await get_tree().process_frame
+	if node.is_inside_tree() and node.visible:
+		node.grab_focus()
+
+
+# CHECKPOINT
+func check_checkpoint_state() -> void:
+	has_checkpoint = Checkpoint.has_checkpoint if "has_checkpoint" in Checkpoint else false
+	if continue_button:
+		continue_button.visible = has_checkpoint
+		continue_button.disabled = not has_checkpoint
+
+
+# AUDIO
+func setup_audio_sliders() -> void:
+	var buses = {
+		"Music": music_slider,
+		"SFX": sfx_slider
+	}
+
+	for bus_name in buses:
+		var slider = buses[bus_name]
+		if not slider: continue
+
+		var idx = AudioServer.get_bus_index(bus_name)
+		slider.value = db_to_linear(AudioServer.get_bus_volume_db(idx))
+
+		slider.value_changed.connect(func(v):
+			AudioServer.set_bus_volume_db(idx, linear_to_db(v))
+			_play_preview(sfx_preview_player, bus_name.to_lower())
+		)
+
+
+# PREVIEW AUDIO
+func _play_preview(player: AudioStreamPlayer, type: String) -> void:
+	var flags = {
+		"music": "can_play_music_preview",
+		"sfx": "can_play_sfx_preview"
+	}
+
+	var flag = flags[type]
+	if not self.get(flag):
+		return
+
+	self.set(flag, false)
+	player.play()
+
+	await get_tree().create_timer(0.5).timeout
+	self.set(flag, true)
 
 
 # INPUT
 func _input(event: InputEvent) -> void:
-	if input_locked:
+	if input_locked: return
+
+	if not started and any_press_active and event.is_pressed():
+		started = true
+		any_press_active = false
+		stop_any_press_pulse()
+		play_ui_click()
+		await open_main_menu()
 		return
 
-	if in_options:
-		if event.is_action_pressed("ui_cancel"):
-			close_options()
-		return
-
-	if started and event.is_action_pressed("ui_cancel"):
-		await return_to_press_start()
-		return
-
-	if not started:
-		if event.is_pressed():
-			started = true
-			stop_any_press_pulse()
-			await open_main_menu()
-		return
+	if in_options and event.is_action_pressed("ui_cancel"):
+		close_options()
+	elif started and event.is_action_pressed("ui_cancel"):
+		return_to_press_start()
 
 
-# VOLTAR
+# STATES (compactado)
 func return_to_press_start() -> void:
 	input_locked = true
-
 	await fade_in(fade_speed_menu)
 
 	started = false
 	in_options = false
+	any_press_active = true
 
-	scroll_container.visible = false
+	press_start_panel.visible = true
+	main_panel.visible = false
 	options_panel.visible = false
-	any_press_start.visible = true
 
 	menu_background.texture = bg_press_start
 	start_any_press_pulse()
 
 	await fade_out(fade_speed_menu)
-
+	set_focus(start_button)
 	input_locked = false
 
 
-# MENU
 func open_main_menu() -> void:
 	input_locked = true
-
 	await fade_in(fade_speed_intro)
 
+	press_start_panel.visible = false
+	main_panel.visible = true
+	options_panel.visible = false
+
 	menu_background.texture = bg_main_menu
-	any_press_start.visible = false
-	scroll_container.visible = true
+
+	await get_tree().process_frame
+	set_focus(start_button)
 
 	await fade_out(fade_speed_intro)
-
-	focus_first_button()
 	input_locked = false
 
 
-func focus_first_button() -> void:
-	for child in vbox_container.get_children():
-		if child is BaseButton and child.visible and not child.disabled:
-			child.grab_focus()
-			return
+# OPTIONS
+func open_options() -> void:
+	play_ui_click()
+	input_locked = true
+	in_options = true
+
+	await fade_in(fade_speed_menu)
+
+	main_panel.visible = false
+	options_panel.visible = true
+	menu_background.texture = bg_options_menu
+
+	await get_tree().process_frame
+	if music_slider:
+		set_focus(music_slider)
+	else:
+		set_focus(options_back_button)
+
+	await fade_out(fade_speed_menu)
+	input_locked = false
 
 
-# AÇÕES
+func close_options() -> void:
+	play_ui_click()
+	input_locked = true
+	in_options = false
+
+	await fade_in(fade_speed_menu)
+
+	options_panel.visible = false
+	main_panel.visible = true
+	menu_background.texture = bg_main_menu
+
+	await get_tree().process_frame
+	set_focus(options_button)
+
+	await fade_out(fade_speed_menu)
+	input_locked = false
+
+
+# BOTÕES
 func _on_start_button_pressed() -> void:
+	play_ui_click()
 	input_locked = true
 	await fade_in(fade_speed_intro)
 	get_tree().change_scene_to_file("res://scenes/Game.scn")
 
 
 func _on_continue_button_pressed() -> void:
+	play_ui_click()
 	input_locked = true
 	await fade_in(fade_speed_intro)
 	Checkpoint.carregar_checkpoint()
 
 
-func _on_options_button_pressed() -> void:
-	open_options()
-
-
 func _on_quit_button_pressed() -> void:
+	play_ui_click()
 	get_tree().quit()
 
 
-# OPTIONS
-func open_options() -> void:
-	input_locked = true
-	in_options = true
+# ANY PRESS
+func start_any_press_pulse() -> void:
+	stop_any_press_pulse()
 
-	await fade_in(fade_speed_menu)
-
-	scroll_container.visible = false
-	options_panel.visible = true
-	menu_background.texture = bg_options_menu
-
-	await get_tree().process_frame
-	options_back_button.grab_focus()
-
-	await fade_out(fade_speed_menu)
-
-	input_locked = false
+	any_press_tween = create_tween().set_loops()
+	any_press_tween.tween_property(any_press_start, "modulate", Color(1.4,1.4,1.4), 0.8)
+	any_press_tween.tween_property(any_press_start, "modulate", Color(0.8,0.8,0.8), 0.8)
 
 
-func close_options() -> void:
-	input_locked = true
-	in_options = false
-
-	await fade_in(fade_speed_menu)
-
-	options_panel.visible = false
-	scroll_container.visible = true
-	menu_background.texture = bg_main_menu
-
-	await get_tree().process_frame
-	focus_first_button()
-
-	await fade_out(fade_speed_menu)
-
-	input_locked = false
-
-
-func _on_options_back_button_pressed() -> void:
-	close_options()
+func stop_any_press_pulse() -> void:
+	if any_press_tween:
+		any_press_tween.kill()
+	any_press_start.modulate = Color.WHITE
 
 
 # FADE
@@ -294,28 +341,19 @@ func initial_sequence() -> void:
 	await fade_out(fade_speed_intro)
 
 
-func fade_in(time: float = -1.0) -> void:
-	if time <= 0:
-		time = default_fade_time
-	start_fade(1.0, time)
-	await wait_fade()
+func fade_in(t: float) -> void:
+	set_ui_blocked(true)
+	await _fade(1.0, t)
 
 
-func fade_out(time: float = -1.0) -> void:
-	if time <= 0:
-		time = default_fade_time
-	start_fade(0.0, time)
-	await wait_fade()
+func fade_out(t: float) -> void:
+	set_ui_blocked(true)
+	await _fade(0.0, t)
 
 
-func start_fade(target: float, time: float) -> void:
-	if tween:
-		tween.kill()
-
+func _fade(target: float, time: float) -> void:
+	if tween: tween.kill()
 	tween = create_tween()
 	tween.tween_property(fade_overlay, "modulate:a", target, time)
-
-
-func wait_fade() -> void:
-	if tween:
-		await tween.finished
+	await tween.finished
+	set_ui_blocked(false)

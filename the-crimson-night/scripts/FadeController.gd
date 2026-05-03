@@ -8,10 +8,11 @@ var _tween: Tween
 var _busy := false
 var _queue: Array = []
 
-func _ready():
+func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	modulate.a = 0.0
 	add_to_group("fade")
+
 
 # =========================
 # API PÚBLICA
@@ -19,6 +20,7 @@ func _ready():
 
 func fade_in(time: float = -1.0, priority: bool = false) -> void:
 	_request_fade(1.0, time, priority)
+
 
 func fade_out(time: float = -1.0, priority: bool = false) -> void:
 	_request_fade(0.0, time, priority)
@@ -53,7 +55,10 @@ func _process_queue() -> void:
 	_start_fade(request)
 
 
-func _start_fade(request) -> void:
+func _start_fade(request: Dictionary) -> void:
+	if not is_inside_tree():
+		return
+
 	_busy = true
 
 	if _tween:
@@ -65,7 +70,10 @@ func _start_fade(request) -> void:
 	await _tween.finished
 
 	_busy = false
-	emit_signal("fade_finished")
+
+	if is_inside_tree():
+		emit_signal("fade_finished")
+
 	_process_queue()
 
 
@@ -76,7 +84,11 @@ func _start_fade(request) -> void:
 func is_busy() -> bool:
 	return _busy
 
+func wait_fade() -> void:
+	if _tween:
+		await _tween.finished
 
+# versão SEGURA (sem loop, sem crash)
 func wait_finished() -> void:
-	while _busy:
-		await get_tree().process_frame
+	if _busy:
+		await fade_finished

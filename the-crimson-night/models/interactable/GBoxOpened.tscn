@@ -10,12 +10,11 @@ data = PackedVector3Array(-0.01, 0.01, 0.01, -0.01, -0.01, 0.01, -0.01, -0.01, -
 
 [node name="GBoxOpened" unique_id=2129778281 instance=ExtResource("1_eb6g3")]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Caixa da F_" parent_id_path=PackedInt32Array(1141933963) index="0" unique_id=1112758319]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Caixa da F_/StaticBody3D" index="0" unique_id=247078503]
-shape = SubResource("ConcavePolygonShape3D_mrb8w")
-
 [node name="StaticBody3D" type="StaticBody3D" parent="Porta" parent_id_path=PackedInt32Array(1665492870) index="0" unique_id=1683307602]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Porta/StaticBody3D" index="0" unique_id=1155550596]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Porta/StaticBody3D" index="0" unique_id=247078503]
+transform = Transform3D(-0.9776099, 0.62285835, 4.6543242e-08, -0.067014374, -0.92156833, 3.1905074e-09, 1.10020295e-08, -3.465189e-09, 0.93421036, -0.0061605764, 0.02047007, 7.5363554e-05)
+shape = SubResource("ConcavePolygonShape3D_mrb8w")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Porta/StaticBody3D" index="1" unique_id=1155550596]
 shape = SubResource("ConcavePolygonShape3D_mi4eq")

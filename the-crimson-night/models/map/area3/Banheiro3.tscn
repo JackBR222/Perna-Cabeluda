@@ -4,17 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bq2h4wpc3shoj" path="res://models/map/area3/Parede_branca.png" id="2_33var"]
 [ext_resource type="Texture2D" uid="uid://dcqxcoaxq44vv" path="res://models/map/area3/Tijolo.png" id="3_plbde"]
 [ext_resource type="Texture2D" uid="uid://bire28o8oo40s" path="res://models/map/area3/Vidro.png" id="4_85hqn"]
-[ext_resource type="Shader" uid="uid://c2jh875a4nmd6" path="res://scripts/shaders/PS1 Model.gdshader" id="5_33var"]
 [ext_resource type="Texture2D" uid="uid://bv78x02d31pnj" path="res://models/map/area3/Telha branca.png" id="5_nspwn"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_85hqn"]
-render_priority = 0
-shader = ExtResource("5_33var")
-shader_parameter/affine_mapping = false
-shader_parameter/albedo = ExtResource("2_33var")
-shader_parameter/alpha_scissor = 0.5
-shader_parameter/jitter = 0.25
-shader_parameter/resolution = Vector2i(320, 240)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kk1lb"]
 resource_name = "Parede Branca"
@@ -59,15 +49,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_krksy")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_33var"]
-render_priority = 0
-shader = ExtResource("5_33var")
-shader_parameter/affine_mapping = false
-shader_parameter/albedo = ExtResource("3_plbde")
-shader_parameter/alpha_scissor = 0.5
-shader_parameter/jitter = 0.25
-shader_parameter/resolution = Vector2i(320, 240)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b7nbj"]
 resource_name = "Parede Tijolo"
 vertex_color_use_as_albedo = true
@@ -108,15 +89,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_k1mhg")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nspwn"]
-render_priority = 0
-shader = ExtResource("5_33var")
-shader_parameter/affine_mapping = false
-shader_parameter/albedo = ExtResource("4_85hqn")
-shader_parameter/alpha_scissor = 0.5
-shader_parameter/jitter = 0.25
-shader_parameter/resolution = Vector2i(320, 240)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h455a"]
 resource_name = "Vidro"
@@ -338,26 +310,21 @@ data = PackedVector3Array(0.041899998, -0.0050999997, 0.5546, 0.041899998, -0.52
 transform = Transform3D(0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0, 0, 0)
 
 [node name="Circle" parent="." index="0" unique_id=806888913]
-material_override = SubResource("ShaderMaterial_85hqn")
 mesh = SubResource("ArrayMesh_0nqf0")
 
 [node name="Parede frente" parent="." index="1" unique_id=2143654715]
-material_override = SubResource("ShaderMaterial_33var")
 mesh = SubResource("ArrayMesh_g1c2p")
 
 [node name="Parede frente_002" parent="." index="2" unique_id=927451090]
-material_override = SubResource("ShaderMaterial_nspwn")
 mesh = SubResource("ArrayMesh_mr1xu")
 
 [node name="Parede frente_004" parent="." index="3" unique_id=1230203446]
-material_override = SubResource("ShaderMaterial_nspwn")
 mesh = SubResource("ArrayMesh_4mv3n")
 
 [node name="Parede frente_005" parent="." index="4" unique_id=1197159726]
 mesh = SubResource("ArrayMesh_7c85j")
 
 [node name="Parede frente_006" parent="." index="5" unique_id=1378186051]
-material_override = SubResource("ShaderMaterial_33var")
 mesh = SubResource("ArrayMesh_aiyjs")
 
 [node name="Telhado Centro" parent="." index="6" unique_id=1971619857]

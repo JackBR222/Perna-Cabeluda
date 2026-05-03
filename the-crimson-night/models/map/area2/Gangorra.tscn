@@ -72,15 +72,14 @@ shape = SubResource("ConcavePolygonShape3D_kyxt8")
 transform = Transform3D(0.99999964, 0, 0, 0, 0.99999964, 0, 0, 0, 0.99999964, 0.0024109068, 0.23992911, -6.1023784e-05)
 shape = SubResource("BoxShape3D_5klb0")
 
-[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="StaticBody3D" index="2" unique_id=634737435]
-transform = Transform3D(0.007142857, 0, 0, 0, 0.007142857, 0, 0, 0, 0.007142857, 0, 0, 0)
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="StaticBody3D" index="2" unique_id=340619037]
+shape = SubResource("SphereShape3D_kyxt8")
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." index="2" unique_id=634737435]
 height = 20.0
 vertices = PackedVector3Array(0, 0, 68.16273, 35.024326, 0, 58.463684, 58.7331, 0, 34.216072, 68.432144, 0, 0.808253, 58.7331, 0, -32.59957, 33.407818, 0, -56.847176, 0, 0, -67.08506, -33.94666, 0, -57.924847, -59.271935, 0, -32.060726, -67.89331, 0, 0.808253, -58.194267, 0, 34.75491, -31.791307, 0, 59.002518)
 
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="StaticBody3D" index="3" unique_id=340619037]
-shape = SubResource("SphereShape3D_kyxt8")
-
-[node name="NavigationObstacle3D2" type="NavigationObstacle3D" parent="." index="2" unique_id=301791008]
+[node name="NavigationObstacle3D2" type="NavigationObstacle3D" parent="." index="3" unique_id=301791008]
 height = 65.0
 vertices = PackedVector3Array(-27.65392, 0, 39.281136, 27.025415, 0, 43.05212, 27.025415, 0, -38.652634, -31.424906, 0, -35.510147, -32.05341, 0, 35.510143)
 affect_navigation_mesh = true

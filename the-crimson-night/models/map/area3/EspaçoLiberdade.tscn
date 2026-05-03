@@ -4,16 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://dcqxcoaxq44vv" path="res://models/map/area3/Tijolo.png" id="2_xlag7"]
 [ext_resource type="Texture2D" uid="uid://bv78x02d31pnj" path="res://models/map/area3/Telha branca.png" id="3_eisa4"]
 [ext_resource type="Texture2D" uid="uid://bire28o8oo40s" path="res://models/map/area3/Vidro.png" id="4_e1ng7"]
-[ext_resource type="Shader" uid="uid://c2jh875a4nmd6" path="res://scripts/shaders/PS1 Model.gdshader" id="4_xlag7"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xlag7"]
-render_priority = 0
-shader = ExtResource("4_xlag7")
-shader_parameter/affine_mapping = false
-shader_parameter/albedo = ExtResource("2_xlag7")
-shader_parameter/alpha_scissor = 0.5
-shader_parameter/jitter = 0.50000002375
-shader_parameter/resolution = Vector2i(320, 240)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l7cvo"]
 resource_name = "Parede Tijolo"
@@ -96,15 +86,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_gedlj")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_eisa4"]
-render_priority = 0
-shader = ExtResource("4_xlag7")
-shader_parameter/affine_mapping = false
-shader_parameter/albedo = ExtResource("4_e1ng7")
-shader_parameter/alpha_scissor = 0.5
-shader_parameter/jitter = 0.50000002375
-shader_parameter/resolution = Vector2i(320, 240)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jwwm4"]
 resource_name = "Vidro"
@@ -297,7 +278,6 @@ transform = Transform3D(0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0, 0, 0)
 
 [node name="TIJOLO" parent="." index="0" unique_id=1248630700]
 transform = Transform3D(5.960465e-06, -7.549792e-06, 116.18246, 0, 100.00001, 8.771534e-06, -100.00001, -3.552714e-13, 6.925014e-06, 0.016828239, -0.33000752, 48.694054)
-material_override = SubResource("ShaderMaterial_xlag7")
 mesh = SubResource("ArrayMesh_h428w")
 
 [node name="Telhado Centro" parent="." index="1" unique_id=2045211421]
@@ -306,22 +286,18 @@ mesh = SubResource("ArrayMesh_qgiv6")
 
 [node name="VIDRO 1" parent="." index="2" unique_id=1870586396]
 transform = Transform3D(100.00001, 0, 0, 0, 100.00001, 7.5497906e-06, 0, -7.5497906e-06, 100.00001, 58.769363, -0.33000678, -0.52979594)
-material_override = SubResource("ShaderMaterial_eisa4")
 mesh = SubResource("ArrayMesh_pklcr")
 
 [node name="VIDRO 2" parent="." index="3" unique_id=1272398774]
 transform = Transform3D(3.576279e-05, -1.9470715e-05, 76.0252, 7.105428e-13, 100.00001, 1.4802651e-05, -100, -6.394885e-12, 2.7188731e-05, 20.063976, -9.094948e-15, -49.430923)
-material_override = SubResource("ShaderMaterial_eisa4")
 mesh = SubResource("ArrayMesh_p6qj5")
 
 [node name="VIDRO 3" parent="." index="4" unique_id=354279553]
 transform = Transform3D(5.960465e-06, -7.549792e-06, 80.45633, 0, 100.00001, 6.0742855e-06, -100.00001, -3.552714e-13, 4.795571e-06, -18.581657, -9.094948e-15, -49.430923)
-material_override = SubResource("ShaderMaterial_eisa4")
 mesh = SubResource("ArrayMesh_6tfdc")
 
 [node name="VIDRO 4" parent="." index="5" unique_id=1901902571]
 transform = Transform3D(-100.00001, 0, 0, 0, 100.00001, 3.8941438e-05, 0, -3.8941438e-05, 100.00001, -60.90126, -0.3300157, -0.53049725)
-material_override = SubResource("ShaderMaterial_eisa4")
 mesh = SubResource("ArrayMesh_xifag")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." index="6" unique_id=1956004328]

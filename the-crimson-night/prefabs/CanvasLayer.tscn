@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://cqtr3kwn8vr7p" path="res://scripts/FadeController.gd" id="2_xtb4j"]
 [ext_resource type="Texture2D" uid="uid://c2opl2ahyymtr" path="res://sprites/menu/MenuConfig.png" id="3_c2fct"]
 [ext_resource type="AudioStream" uid="uid://wbujovhf485b" path="res://audio/sounds/footstep_concrete.mp3" id="4_c2fct"]
+[ext_resource type="AudioStream" uid="uid://dikurla0uwtx4" path="res://audio/sounds/ui_press.mp3" id="4_u6q3s"]
+[ext_resource type="AudioStream" uid="uid://buba2evu38lih" path="res://audio/sounds/ui_hover.mp3" id="5_c2fct"]
 [ext_resource type="Texture2D" uid="uid://b2cg3ox6dlfgr" path="res://sprites/menu/ButtonStart.png" id="6_yvhxm"]
 [ext_resource type="Texture2D" uid="uid://dxgfq5hkgetqp" path="res://sprites/menu/ButtonPressStart.png" id="7_1ord3"]
 [ext_resource type="Texture2D" uid="uid://cuwufyeu26353" path="res://sprites/menu/ButtonSelectStart.png" id="8_osf1l"]
@@ -18,15 +20,17 @@
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=427799503 node_paths=PackedStringArray("background", "panel", "options_panel", "resume_button", "options_button", "main_menu_button", "options_back_button")]
 script = ExtResource("1_ffv17")
-background = NodePath("MenuBackground")
-panel = NodePath("ScrollContainer")
+background = NodePath("PausePanel/PauseBG")
+panel = NodePath("PausePanel")
 options_panel = NodePath("OptionsPanel")
-resume_button = NodePath("ScrollContainer/VBoxContainer/ResumeButton")
-options_button = NodePath("ScrollContainer/VBoxContainer/OptionsButton")
-main_menu_button = NodePath("ScrollContainer/VBoxContainer/MenuButton")
+resume_button = NodePath("PausePanel/ScrollContainer/VBoxContainer/ResumeButton")
+options_button = NodePath("PausePanel/ScrollContainer/VBoxContainer/OptionsButton")
+main_menu_button = NodePath("PausePanel/ScrollContainer/VBoxContainer/MenuButton")
 options_back_button = NodePath("OptionsPanel/BottomLeft/BackButton")
 bg_pause = ExtResource("2_u6q3s")
 bg_options = ExtResource("3_c2fct")
+ui_click_sound = ExtResource("4_u6q3s")
+ui_hover_sound = ExtResource("5_c2fct")
 
 [node name="MusicPreviewPlayer" type="AudioStreamPlayer" parent="." unique_id=1807980061]
 stream = ExtResource("4_c2fct")
@@ -35,6 +39,15 @@ bus = &"Music"
 [node name="SFXPreviewPlayer" type="AudioStreamPlayer" parent="." unique_id=1290568975]
 stream = ExtResource("4_c2fct")
 bus = &"SFX"
+
+[node name="ItemIcon" type="TextureRect" parent="." unique_id=477270345 groups=["item_ui"]]
+z_index = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -128.0
+offset_right = 128.0
+grow_vertical = 0
 
 [node name="Vignette" type="TextureRect" parent="." unique_id=45292469]
 visible = false
@@ -48,7 +61,7 @@ expand_mode = 1
 
 [node name="FadeInOut" type="ColorRect" parent="." unique_id=1305935129]
 visible = false
-z_index = 1
+z_index = 2
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -57,8 +70,17 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 script = ExtResource("2_xtb4j")
 
-[node name="MenuBackground" type="TextureRect" parent="." unique_id=1410895263]
+[node name="PausePanel" type="Control" parent="." unique_id=35591320]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PauseBG" type="TextureRect" parent="PausePanel" unique_id=1410895263]
 z_index = -1
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -68,54 +90,71 @@ texture = ExtResource("2_u6q3s")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=683413287]
+[node name="ScrollContainer" type="ScrollContainer" parent="PausePanel" unique_id=683413287]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -162.99997
-offset_top = -124.999985
-offset_right = 733.0
-offset_bottom = 547.0
+offset_left = -191.0
+offset_top = -128.0
+offset_right = 619.0
+offset_bottom = 378.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.4200003, 0.4200003)
+scale = Vector2(0.5, 0.5)
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=1364232559]
+[node name="VBoxContainer" type="VBoxContainer" parent="PausePanel/ScrollContainer" unique_id=1364232559]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+alignment = 1
+
+[node name="ResumeButton" type="TextureButton" parent="PausePanel/ScrollContainer/VBoxContainer" unique_id=951928757]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
-
-[node name="ResumeButton" type="TextureButton" parent="ScrollContainer/VBoxContainer" unique_id=951928757]
-layout_mode = 2
-mouse_filter = 2
 texture_normal = ExtResource("6_yvhxm")
 texture_pressed = ExtResource("7_1ord3")
-texture_hover = ExtResource("8_osf1l")
+texture_focused = ExtResource("8_osf1l")
 
-[node name="OptionsButton" type="TextureButton" parent="ScrollContainer/VBoxContainer" unique_id=1530458713]
+[node name="OptionsButton" type="TextureButton" parent="PausePanel/ScrollContainer/VBoxContainer" unique_id=1530458713]
 layout_mode = 2
 mouse_filter = 2
 texture_normal = ExtResource("9_df778")
 texture_pressed = ExtResource("10_m32o6")
-texture_hover = ExtResource("11_a8eyj")
+texture_focused = ExtResource("11_a8eyj")
 
-[node name="MenuButton" type="TextureButton" parent="ScrollContainer/VBoxContainer" unique_id=1316485267]
+[node name="MenuButton" type="TextureButton" parent="PausePanel/ScrollContainer/VBoxContainer" unique_id=1316485267]
 layout_mode = 2
 mouse_filter = 2
 texture_normal = ExtResource("15_onx8w")
 texture_pressed = ExtResource("16_adj5h")
-texture_hover = ExtResource("17_khevq")
+texture_focused = ExtResource("17_khevq")
 
 [node name="OptionsPanel" type="Control" parent="." unique_id=727373160]
+z_index = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="PauseBG" type="TextureRect" parent="OptionsPanel" unique_id=825585979]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_c2fct")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="BottomLeft" type="Control" parent="OptionsPanel" unique_id=970882126]
 layout_mode = 1
@@ -139,7 +178,7 @@ scale = Vector2(0.5, 0.5)
 mouse_filter = 2
 texture_normal = ExtResource("15_onx8w")
 texture_pressed = ExtResource("16_adj5h")
-texture_hover = ExtResource("17_khevq")
+texture_focused = ExtResource("17_khevq")
 
 [node name="Center" type="Control" parent="OptionsPanel" unique_id=1694609524]
 layout_mode = 1
@@ -209,7 +248,7 @@ offset_bottom = 107.0
 text = "SFX"
 horizontal_alignment = 1
 
-[connection signal="pressed" from="ScrollContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_pressed"]
-[connection signal="pressed" from="ScrollContainer/VBoxContainer/OptionsButton" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="ScrollContainer/VBoxContainer/MenuButton" to="." method="_on_main_menu_pressed"]
+[connection signal="pressed" from="PausePanel/ScrollContainer/VBoxContainer/ResumeButton" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="PausePanel/ScrollContainer/VBoxContainer/OptionsButton" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="PausePanel/ScrollContainer/VBoxContainer/MenuButton" to="." method="_on_main_menu_pressed"]
 [connection signal="pressed" from="OptionsPanel/BottomLeft/BackButton" to="." method="_on_options_back_pressed"]

@@ -58,7 +58,7 @@ mesh = SubResource("ArrayMesh_1rvol")
 transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=741691151]
-transform = Transform3D(27.43951, 0, 0, 0, -5.3798085e-06, 10.014551, 0, -22.564552, -2.387655e-06, 0, 0.101489455, 0.12500003)
+transform = Transform3D(27.43951, 0, 0, 0, -9.863279e-07, 10.014551, 0, -22.564552, -4.3774995e-07, 0, 0.101489455, 0.12500003)
 shape = SubResource("ConcavePolygonShape3D_2ebca")
 
 [node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="." index="2" unique_id=2069510867]
